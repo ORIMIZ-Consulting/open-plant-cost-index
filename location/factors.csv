@@ -1,0 +1,14 @@
+code,name,factor,low,high,confidence,method,source,as_of,notes
+US-GC,US Gulf Coast,1.00,0.90,1.10,high,reference,REFERENCE,2026,Costs still swing with local contractor load.
+RU-YAM,"Yamal, Arctic Russia",1.25,1.13,1.44,medium,published group,OIES-NG137,2018,Heavy modularization in Asian yards. Sanctions since 2022 reduce reliability for new work.
+RU-SAK,"Sakhalin, Russian Far East",1.40,1.26,1.61,medium,"step rule, confirmed by practitioner judgment",STEP-RULE,2018,"Remote island, ice and cold, little local labour, long logistics; largely stick-built. Sanctions since 2022 add uncertainty."
+PG,Papua New Guinea,1.29,1.16,1.48,medium,published group,OIES-NG137,2018,
+AU-QLD,"Queensland, Australia",1.34,1.21,1.54,medium,published group,OIES-NG137,2018,
+AU-NW,North West Australia,1.72,1.55,1.98,medium,published group,OIES-NG137,2018,Reflects the 2010s labour boom; may be high for today.
+REMOTE,"Remote greenfield, generic",1.30,1.11,1.63,low,published group,OIES-NG137,2018,Placeholder when nothing better exists.
+ID-KAL,"East Kalimantan, Indonesia",1.20,1.08,1.38,medium,step rule,STEP-RULE,2018,Existing LNG hub at Bontang.
+MY-BIN,"Bintulu, Malaysia",1.10,0.99,1.27,medium,step rule,STEP-RULE,2018,Mature LNG hub with local fabrication yards.
+QA-RLF,Qatar (Ras Laffan),1.00,0.90,1.15,medium,step rule,STEP-RULE,2018,"Mature hub and lower-cost imported labour (down); extreme heat, nearly all equipment imported (up)."
+AE,"UAE (Das Island, Ruwais)",1.00,0.90,1.15,medium,step rule,STEP-RULE,2018,Same reasoning as Qatar.
+OM,Oman (Qalhat),1.00,0.90,1.15,medium,step rule,STEP-RULE,2018,"Same reasoning as Qatar, smaller hub."
+CA-BC,"British Columbia, Canada (Kitimat)",1.40,1.26,1.61,medium,step rule,STEP-RULE,2018,"Remote, high and scarce skilled labour, wet cold climate (up); heavy use of Asian-built modules (down)."

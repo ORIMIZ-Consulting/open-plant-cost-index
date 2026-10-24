@@ -19,8 +19,11 @@ All notable changes to OPCI are listed here. Code versions and data releases are
 - METHOD.md.
 - Validation chart (`docs/validation_chart.svg`, built by `opci/chart.py`): OPCI line against public CEPCI points, supply-shock years shaded. Follows light and dark themes.
 
+- Location module, version 0.1.0 (`location/`, `opci/locations.py`): 13 locations from the decided starting table, with range, confidence, method, source and `as_of` year. Factor A to B = factor(B) / factor(A). Own method note and validation page.
+
 ### Changed
 - README and METHOD.md describe the scale as checked against public CEPCI values.
+- Description in README, CITATION.cff and pyproject.toml: "A free, open source plant cost index, checked against the Chemical Engineering Plant Cost Index (CEPCI), using only public domain data."
 
 ### Changed
 - LICENSE copyright holder corrected to Syed Zia Haider.

@@ -1,0 +1,13 @@
+# Full references for the `source` keys in factors.csv.
+REFERENCE: >
+  Reference location. All OPCI location factors are stated against the US Gulf
+  Coast = 1.00.
+OIES-NG137: >
+  Songhurst, B. (2018). LNG Plant Cost Reduction 2014-18. Oxford Institute for
+  Energy Studies, OIES Paper NG 137. Location factor analysis (USA = 100%).
+  Group factors as carried into the OPCI starting table (owner's Scenario C work,
+  October 2026). Figure and page reference not yet checked against the paper.
+STEP-RULE: >
+  OPCI step rule (location/METHOD_LOCATION.md, section 3), starting from the
+  nearest OIES group factor (Songhurst 2018, OIES NG 137). Owner judgment,
+  Scenario C work, October 2026.

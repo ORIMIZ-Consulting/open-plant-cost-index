@@ -114,6 +114,6 @@ The default is 2% a year on labour and engineering. The validation page also sho
 
 ## 8. Location
 
-The location method is kept apart from escalation, in `location/` with its own method note. It is built in a later step.
+The location method is kept apart from escalation, in `location/` with its own data file, method note, validation page and version number. See [location/METHOD_LOCATION.md](location/METHOD_LOCATION.md).
 
 CEPCI is a trademark of Chemical Engineering magazine. OPCI is not affiliated with or endorsed by Chemical Engineering.

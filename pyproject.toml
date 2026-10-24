@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "opci"
 version = "0.1.0"
-description = "Open Plant Cost Index: a free, open source plant cost index using only public domain data."
+description = "A free, open source plant cost index, checked against the Chemical Engineering Plant Cost Index (CEPCI), using only public domain data."
 readme = "README.md"
 license = "MIT"
 authors = [{ name = "Syed Zia Haider" }]

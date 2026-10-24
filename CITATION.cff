@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use OPCI, please cite it as below."
 title: "Open Plant Cost Index (OPCI)"
-abstract: "A free, open source plant cost index built to track the Chemical Engineering Plant Cost Index (CEPCI) closely, using only public domain data. Maintained by ORIMIZ Consulting."
+abstract: "A free, open source plant cost index, checked against the Chemical Engineering Plant Cost Index (CEPCI), using only public domain data. Maintained by ORIMIZ Consulting."
 type: software
 authors:
   - family-names: "Haider"

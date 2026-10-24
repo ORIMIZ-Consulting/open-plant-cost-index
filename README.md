@@ -1,6 +1,6 @@
 # Open Plant Cost Index (OPCI)
 
-A free, open source plant cost index built to track the Chemical Engineering Plant Cost Index (CEPCI) closely, using only public domain data.
+A free, open source plant cost index, checked against the Chemical Engineering Plant Cost Index (CEPCI), using only public domain data.
 
 Maintained by ORIMIZ Consulting.
 
