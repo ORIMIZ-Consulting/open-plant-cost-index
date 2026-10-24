@@ -21,6 +21,7 @@ It is built for students, small consultancies, researchers and independent estim
 
 - **Escalation** uses 12 price and wage series from the US Bureau of Labor Statistics (BLS), pulled through FRED (Federal Reserve Economic Data, St. Louis Fed). All are public domain. See [DATA_NOTICE.md](DATA_NOTICE.md).
 - **Weights** follow the published 2002 CEPCI component weights, mapped to the 12 series.
+- **Scale.** The level of the index is checked against public CEPCI values. It has no effect on any escalation factor.
 - **Location factors** come from published group factors (Oxford Institute for Energy Studies) and a stated step rule. Each factor has a range, a confidence level and a source.
 
 The full method is in [METHOD.md](METHOD.md). The check against public CEPCI values is in [VALIDATION.md](VALIDATION.md).
@@ -47,7 +48,7 @@ If you hold a CEPCI subscription or paid index data, you can use it in place of 
 
 ## Limits
 
-- OPCI tracks CEPCI. It is not CEPCI. Expect differences of up to about 5% in any year.
+- OPCI is checked against public CEPCI values. It is not CEPCI. Expect differences of up to about 5% in normal years, and more in 2021 and 2022, when supply shocks after the pandemic made index values less certain.
 - The data are US prices. Other countries are handled through location factors. These are judgment based and carry wider uncertainty, often plus or minus 15 to 20%.
 - The tool assumes plant costs abroad rise at the US rate in dollar terms. This holds well for imported equipment and less well for local labour and materials. Version 2 will address this.
 - OPCI is suited to screening and early estimates (AACE International Class 5 and Class 4). For funding decisions, use project-specific data.

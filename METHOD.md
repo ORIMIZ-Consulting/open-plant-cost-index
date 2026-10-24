@@ -70,7 +70,7 @@ OPCI(t) = Scale x sum over series i of [ w_i x ( P_i(t) / P_i(2019) ) x adj_i(t)
 
 The scale sets the level of the index. It has no effect on any escalation factor.
 
-- **Default:** a CEPCI-comparable scale, set by best fit to public CEPCI annual averages. The fit is least squares on the log of the ratio OPCI / CEPCI. It does not match any single year.
+- **Default:** a CEPCI-comparable scale, checked against public CEPCI values. The level is set by least squares on the log of the ratio OPCI / CEPCI across the normal years. It does not match any single year.
 - **Switch:** 2019 = 100.
 
 OPCI is never forced through the public points. Doing so would rebuild CEPCI from its own numbers.
@@ -82,7 +82,7 @@ Public CEPCI annual averages are stored with their sources in [escalation/public
 - `fit`: a normal year, used for the scale fit and the back-test.
 - `watch`: a supply-shock year, left out of the fit and checked on a watch limit.
 
-One point is added each year when Chemical Engineering publishes the new annual average. The scale is then refitted.
+One point is added each year when Chemical Engineering publishes the new annual average. The scale is then checked again and its level reset.
 
 ### 5.2 Supply-shock years (decided, 24 October 2026)
 
@@ -92,12 +92,14 @@ One point is added each year when Chemical Engineering publishes the new annual 
 
 **What it means.**
 
-- The scale is fitted on the 14 normal years (2008 to 2020 and 2023).
+- The scale is set and checked against public CEPCI values on the 14 normal years (2008 to 2020 and 2023).
 - The 8% fail limit applies to the normal years. If the worst error there goes above 8%, the build fails.
 - 2021 and 2022 are still shown on the validation page, marked as supply-shock years. They are checked against a separate 10% watch limit. Going above the watch limit is reported but does not fail the build.
-- When a base or target date falls in 2021 or 2022, the output carries a warning. OPCI ran about 6 to 9% below CEPCI in those years. A base date in those years may overstate escalation from it. A target date in those years may understate escalation to it.
+- When the base date or the target date falls in 2021 or 2022, the output shows this note:
 
-**Result with the 2026-10-24 snapshot:** scale gives OPCI 2019 = 612.9. Worst error on the 14 normal years is 5.5% (2016). Supply-shock years: 2021 is -6.2% and 2022 is -8.9%.
+  > Note: 2021 and 2022 were unusual years. Supply shocks after the pandemic pushed equipment and material prices up quickly and unevenly. Index values for these years are less certain than for other years. Escalation from a 2021 or 2022 cost date may be somewhat overstated, and escalation to a 2021 or 2022 target date may be somewhat understated. See METHOD.md.
+
+**Result with the 2026-10-24 snapshot (14-point fit):** OPCI 2019 = 612.9. Worst error on the 14 normal years is 5.5% (2016). Supply-shock years: 2021 is -6.2% and 2022 is -8.9% against public CEPCI values.
 
 ## 6. Productivity rate
 
@@ -105,7 +107,7 @@ The default is 2% a year on labour and engineering. The validation page also sho
 
 ## 7. Limits
 
-- OPCI tracks CEPCI. It is not CEPCI. Expect differences of up to about 5% in normal years, and more in supply-shock years.
+- OPCI is checked against public CEPCI values. It is not CEPCI. Expect differences of up to about 5% in normal years, and more in supply-shock years.
 - The data are US prices. Other places are handled through location factors, which are judgment based.
 - OPCI assumes plant costs abroad rise at the US rate in dollar terms.
 - OPCI suits screening and early estimates (AACE International Class 5 and Class 4).

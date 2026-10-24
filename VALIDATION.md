@@ -12,6 +12,8 @@ This page compares OPCI with Chemical Engineering Plant Cost Index (CEPCI) annua
 - Root mean square (RMS) error on the normal years: 3.2%.
 - Worst error on the supply-shock years: 8.9% (watch limit 10%, reports only): **within watch limit**.
 
+![OPCI against public CEPCI annual values, 2008 to 2026](docs/validation_chart.svg)
+
 ## Normal years (used for the scale fit)
 
 | Year | Public CEPCI | OPCI | Difference | Source |

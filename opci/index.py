@@ -22,30 +22,20 @@ PROTOTYPE_ANCHOR = 607.5   # public CEPCI 2019 annual average, used by the proto
 
 # Supply-shock years: left out of the scale fit, checked on a watch limit (METHOD.md).
 SUPPLY_SHOCK_YEARS = (2021, 2022)
-SUPPLY_SHOCK_GAP = "about 6 to 9%"   # 2021 -6.2%, 2022 -8.9% on the 14-point fit
+SUPPLY_SHOCK_NOTE = (
+    "Note: 2021 and 2022 were unusual years. Supply shocks after the pandemic pushed "
+    "equipment and material prices up quickly and unevenly. Index values for these years "
+    "are less certain than for other years. Escalation from a 2021 or 2022 cost date may "
+    "be somewhat overstated, and escalation to a 2021 or 2022 target date may be somewhat "
+    "understated. See METHOD.md."
+)
 
 
 def supply_shock_warning(base, target):
-    """Return a warning when the base or target date falls in a supply-shock year, else None.
-
-    OPCI ran low in those years. A low base value overstates escalation from it;
-    a low target value understates escalation to it.
-    """
-    in_base = int(str(base)[:4]) in SUPPLY_SHOCK_YEARS
-    in_target = int(str(target)[:4]) in SUPPLY_SHOCK_YEARS
-    if not (in_base or in_target):
-        return None
-    years = " and ".join(str(y) for y in SUPPLY_SHOCK_YEARS)
-    lines = [f"Warning: {years} are supply-shock years. "
-             f"OPCI ran {SUPPLY_SHOCK_GAP} below CEPCI in those years."]
-    if in_base and in_target:
-        lines.append(f"Both the base date {base} and the target date {target} fall in them, "
-                     "so the two effects partly cancel.")
-    elif in_base:
-        lines.append(f"The base date {base} falls in them, so escalation from it may be overstated.")
-    else:
-        lines.append(f"The target date {target} falls in them, so escalation to it may be understated.")
-    return " ".join(lines)
+    """Return the supply-shock note when the base or target date falls in 2021 or 2022, else None."""
+    if any(int(str(d)[:4]) in SUPPLY_SHOCK_YEARS for d in (base, target)):
+        return SUPPLY_SHOCK_NOTE
+    return None
 
 
 def load_weights(investment="general"):

@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" width="760" height="380" role="img" aria-labelledby="t d">
+<title id="t">OPCI against public CEPCI annual values</title>
+<desc id="d">Line: OPCI annual index. Dots: public CEPCI annual averages. Shaded: supply-shock years, left out of the scale check.</desc>
+<style>
+  .surface { fill: #fcfcfb; }
+  .grid { stroke: #e1e0d9; stroke-width: 1; }
+  .axis { stroke: #c3c2b7; stroke-width: 1; }
+  .tick { fill: #898781; font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; font-variant-numeric: tabular-nums; }
+  .label { fill: #0b0b0b; font: 600 13px system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .note { fill: #52514e; font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .band { fill: #f0efec; }
+  .opci { stroke: #2a78d6; stroke-width: 2; fill: none; stroke-linejoin: round; stroke-linecap: round; }
+  .opci-part { stroke: #2a78d6; stroke-width: 2; fill: none; stroke-dasharray: 4 4; }
+  .opci-dot { fill: #2a78d6; }
+  .cepci { fill: #eb6834; stroke: #fcfcfb; stroke-width: 2; }
+  .cepci-watch { fill: #fcfcfb; stroke: #eb6834; stroke-width: 2; }
+  @media (prefers-color-scheme: dark) {
+    .surface { fill: #1a1a19; }
+    .grid { stroke: #2c2c2a; }
+    .axis { stroke: #383835; }
+    .label { fill: #f0efec; }
+    .note { fill: #c3c2b7; }
+    .band { fill: #262624; }
+    .opci, .opci-part { stroke: #3987e5; }
+    .opci-dot { fill: #3987e5; }
+    .cepci { fill: #d95926; stroke: #1a1a19; }
+    .cepci-watch { fill: #1a1a19; stroke: #d95926; }
+  }
+</style>
+<rect class="surface" x="0" y="0" width="760" height="380" rx="8"/>
+<rect class="band" x="461.6" y="48" width="32.4" height="292"/>
+<rect class="band" x="494.0" y="48" width="32.4" height="292"/>
+<text class="note" x="494.0" y="42" text-anchor="middle">Supply-shock years</text>
+<line class="grid" x1="56" x2="640" y1="340.0" y2="340.0"/>
+<text class="tick" x="48" y="344.0" text-anchor="end">500</text>
+<line class="grid" x1="56" x2="640" y1="267.0" y2="267.0"/>
+<text class="tick" x="48" y="271.0" text-anchor="end">600</text>
+<line class="grid" x1="56" x2="640" y1="194.0" y2="194.0"/>
+<text class="tick" x="48" y="198.0" text-anchor="end">700</text>
+<line class="grid" x1="56" x2="640" y1="121.0" y2="121.0"/>
+<text class="tick" x="48" y="125.0" text-anchor="end">800</text>
+<line class="grid" x1="56" x2="640" y1="48.0" y2="48.0"/>
+<text class="tick" x="48" y="52.0" text-anchor="end">900</text>
+<line class="axis" x1="56" x2="640" y1="340" y2="340"/>
+<text class="tick" x="56.0" y="358" text-anchor="middle">2008</text>
+<text class="tick" x="120.9" y="358" text-anchor="middle">2010</text>
+<text class="tick" x="185.8" y="358" text-anchor="middle">2012</text>
+<text class="tick" x="250.7" y="358" text-anchor="middle">2014</text>
+<text class="tick" x="315.6" y="358" text-anchor="middle">2016</text>
+<text class="tick" x="380.4" y="358" text-anchor="middle">2018</text>
+<text class="tick" x="445.3" y="358" text-anchor="middle">2020</text>
+<text class="tick" x="510.2" y="358" text-anchor="middle">2022</text>
+<text class="tick" x="575.1" y="358" text-anchor="middle">2024</text>
+<text class="tick" x="640.0" y="358" text-anchor="middle">2026</text>
+<path class="opci" d="M56.0,303.0 L88.4,304.5 L120.9,303.9 L153.3,295.8 L185.8,292.1 L218.2,292.6 L250.7,289.2 L283.1,288.6 L315.6,287.9 L348.0,283.4 L380.4,267.3 L412.9,257.6 L445.3,256.2 L477.8,219.6 L510.2,162.6 L542.7,145.3 L575.1,130.9 L607.6,107.0"/>
+<path class="opci-part" d="M607.6,107.0 L640.0,77.3"/>
+<circle class="opci-dot" cx="56.0" cy="303.0" r="2.5"><title>2008: OPCI 550.7</title></circle>
+<circle class="opci-dot" cx="88.4" cy="304.5" r="2.5"><title>2009: OPCI 548.6</title></circle>
+<circle class="opci-dot" cx="120.9" cy="303.9" r="2.5"><title>2010: OPCI 549.5</title></circle>
+<circle class="opci-dot" cx="153.3" cy="295.8" r="2.5"><title>2011: OPCI 560.5</title></circle>
+<circle class="opci-dot" cx="185.8" cy="292.1" r="2.5"><title>2012: OPCI 565.7</title></circle>
+<circle class="opci-dot" cx="218.2" cy="292.6" r="2.5"><title>2013: OPCI 564.9</title></circle>
+<circle class="opci-dot" cx="250.7" cy="289.2" r="2.5"><title>2014: OPCI 569.6</title></circle>
+<circle class="opci-dot" cx="283.1" cy="288.6" r="2.5"><title>2015: OPCI 570.4</title></circle>
+<circle class="opci-dot" cx="315.6" cy="287.9" r="2.5"><title>2016: OPCI 571.3</title></circle>
+<circle class="opci-dot" cx="348.0" cy="283.4" r="2.5"><title>2017: OPCI 577.6</title></circle>
+<circle class="opci-dot" cx="380.4" cy="267.3" r="2.5"><title>2018: OPCI 599.6</title></circle>
+<circle class="opci-dot" cx="412.9" cy="257.6" r="2.5"><title>2019: OPCI 612.9</title></circle>
+<circle class="opci-dot" cx="445.3" cy="256.2" r="2.5"><title>2020: OPCI 614.7</title></circle>
+<circle class="opci-dot" cx="477.8" cy="219.6" r="2.5"><title>2021: OPCI 664.9</title></circle>
+<circle class="opci-dot" cx="510.2" cy="162.6" r="2.5"><title>2022: OPCI 743.0</title></circle>
+<circle class="opci-dot" cx="542.7" cy="145.3" r="2.5"><title>2023: OPCI 766.7</title></circle>
+<circle class="opci-dot" cx="575.1" cy="130.9" r="2.5"><title>2024: OPCI 786.4</title></circle>
+<circle class="opci-dot" cx="607.6" cy="107.0" r="2.5"><title>2025: OPCI 819.2</title></circle>
+<circle class="opci-dot" cx="640.0" cy="77.3" r="2.5"><title>2026: OPCI 859.9 (9 months, part year)</title></circle>
+<circle class="cepci" cx="56.0" cy="285.0" r="5"><title>2008: public CEPCI 575.4, OPCI -4.3%</title></circle>
+<circle class="cepci" cx="88.4" cy="324.0" r="5"><title>2009: public CEPCI 521.9, OPCI +5.1%</title></circle>
+<circle class="cepci" cx="120.9" cy="302.9" r="5"><title>2010: public CEPCI 550.8, OPCI -0.2%</title></circle>
+<circle class="cepci" cx="153.3" cy="277.4" r="5"><title>2011: public CEPCI 585.7, OPCI -4.3%</title></circle>
+<circle class="cepci" cx="185.8" cy="278.2" r="5"><title>2012: public CEPCI 584.6, OPCI -3.2%</title></circle>
+<circle class="cepci" cx="218.2" cy="290.9" r="5"><title>2013: public CEPCI 567.3, OPCI -0.4%</title></circle>
+<circle class="cepci" cx="250.7" cy="284.4" r="5"><title>2014: public CEPCI 576.1, OPCI -1.1%</title></circle>
+<circle class="cepci" cx="283.1" cy="298.5" r="5"><title>2015: public CEPCI 556.8, OPCI +2.4%</title></circle>
+<circle class="cepci" cx="315.6" cy="309.6" r="5"><title>2016: public CEPCI 541.7, OPCI +5.5%</title></circle>
+<circle class="cepci" cx="348.0" cy="290.7" r="5"><title>2017: public CEPCI 567.5, OPCI +1.8%</title></circle>
+<circle class="cepci" cx="380.4" cy="264.7" r="5"><title>2018: public CEPCI 603.1, OPCI -0.6%</title></circle>
+<circle class="cepci" cx="412.9" cy="261.5" r="5"><title>2019: public CEPCI 607.5, OPCI +0.9%</title></circle>
+<circle class="cepci" cx="445.3" cy="269.8" r="5"><title>2020: public CEPCI 596.2, OPCI +3.1%</title></circle>
+<circle class="cepci-watch" cx="477.8" cy="187.6" r="5"><title>2021: public CEPCI 708.8, OPCI -6.2%</title></circle>
+<circle class="cepci-watch" cx="510.2" cy="109.3" r="5"><title>2022: public CEPCI 816.0, OPCI -8.9%</title></circle>
+<circle class="cepci" cx="542.7" cy="122.5" r="5"><title>2023: public CEPCI 797.9, OPCI -3.9%</title></circle>
+<text class="label" x="650.0" y="81.3">OPCI</text>
+<text class="note" x="650.0" y="97.3">9 months, part year</text>
+<text class="label" x="552.7" y="126.5">Public CEPCI</text>
+<line class="opci" x1="56" x2="76" y1="20" y2="20"/>
+<text class="note" x="82" y="24">OPCI (annual)</text>
+<circle class="cepci" cx="186" cy="20" r="5"/>
+<text class="note" x="196" y="24">Public CEPCI (normal year)</text>
+<circle class="cepci-watch" cx="376" cy="20" r="5"/>
+<text class="note" x="386" y="24">Public CEPCI (supply-shock year)</text>
+</svg>

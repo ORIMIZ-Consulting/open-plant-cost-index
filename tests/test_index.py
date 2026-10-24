@@ -63,14 +63,22 @@ def test_no_warning_outside_supply_shock_years():
     assert supply_shock_warning("2011", "2026Q3") is None
 
 
-def test_warning_for_base_in_supply_shock_year():
-    msg = supply_shock_warning("2022", "2026Q3")
-    assert "about 6 to 9% below CEPCI" in msg and "overstated" in msg
+NOTE = (
+    "Note: 2021 and 2022 were unusual years. Supply shocks after the pandemic pushed "
+    "equipment and material prices up quickly and unevenly. Index values for these years "
+    "are less certain than for other years. Escalation from a 2021 or 2022 cost date may "
+    "be somewhat overstated, and escalation to a 2021 or 2022 target date may be somewhat "
+    "understated. See METHOD.md."
+)
 
 
-def test_warning_for_target_in_supply_shock_year():
-    msg = supply_shock_warning("2015", "2021Q4")
-    assert "about 6 to 9% below CEPCI" in msg and "understated" in msg
+@pytest.mark.parametrize("base,target", [("2022", "2026Q3"), ("2015", "2021Q4"), ("2021Q2", "2022")])
+def test_supply_shock_note_exact_text(base, target):
+    assert supply_shock_warning(base, target) == NOTE
+
+
+def test_supply_shock_note_has_no_percentages():
+    assert "%" not in NOTE
 
 
 def test_unknown_investment_type():

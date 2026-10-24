@@ -12,11 +12,14 @@ from pathlib import Path
 
 from opci import CREDIT, __version__
 from opci.calibrate import (FAIL_LIMIT, POINTS_FILE, WATCH_LIMIT, backtest, fit_joint)
+from opci.chart import build_svg
 from opci.fred import latest_snapshot, load_snapshot
 from opci.index import DEFAULT_PRODUCTIVITY, SUPPLY_SHOCK_YEARS, compute
 
 ROOT = Path(__file__).resolve().parent.parent
 SENSITIVITY_RATES = (0.0, 0.01, 0.015, 0.02, 0.025)
+CHART_PATH = "docs/validation_chart.svg"   # relative to VALIDATION.md
+START_YEAR = 2008                          # version 1 series start
 
 
 def _pct(x):
@@ -33,7 +36,7 @@ def build_report(snapshot=None):
     _, manifest = load_snapshot(snapshot)
     bt = backtest(snapshot=snapshot)
     joint = fit_joint(snapshot=snapshot)
-    rows, _ = compute(anchor=bt["anchor"], snapshot=snapshot)
+    rows, _ = compute(anchor=bt["anchor"], snapshot=snapshot, start=START_YEAR)
     opci = {int(r["period"]): r for r in rows}
     src = _sources()
     shock = " and ".join(str(y) for y in SUPPLY_SHOCK_YEARS)
@@ -59,6 +62,8 @@ def build_report(snapshot=None):
         f"- Worst error on the supply-shock years: {bt['watch_worst'] * 100:.1f}% "
         f"(watch limit {WATCH_LIMIT:.0%}, reports only): "
         f"**{'within watch limit' if bt['watch_ok'] else 'ABOVE WATCH LIMIT'}**.",
+        "",
+        f"![OPCI against public CEPCI annual values, {min(opci)} to {max(opci)}]({CHART_PATH})",
         "",
         "## Normal years (used for the scale fit)",
         "",
@@ -121,7 +126,12 @@ def build_report(snapshot=None):
         "OPCI is not affiliated with or endorsed by Chemical Engineering.",
         "",
     ]
-    return "\n".join(out), bt
+    last = opci[max(opci)]
+    part = f"{last['months']} months, part year" if last["part"] else None
+    svg = build_svg({y: r["value"] for y, r in opci.items()},
+                    {y: float(s["value"]) for y, s in src.items()},
+                    SUPPLY_SHOCK_YEARS, part)
+    return "\n".join(out), svg, bt
 
 
 def main(argv=None):
@@ -129,8 +139,11 @@ def main(argv=None):
     ap.add_argument("--snapshot", default=None, help="snapshot folder (default: latest)")
     ap.add_argument("--out", default=str(ROOT / "VALIDATION.md"))
     args = ap.parse_args(argv)
-    text, bt = build_report(args.snapshot)
+    text, svg, bt = build_report(args.snapshot)
     Path(args.out).write_text(text, encoding="utf-8")
+    chart = Path(args.out).parent / CHART_PATH
+    chart.parent.mkdir(parents=True, exist_ok=True)
+    chart.write_text(svg, encoding="utf-8")
     print(f"Worst error on normal years {bt['worst'] * 100:.2f}% (limit {FAIL_LIMIT:.0%}). "
           f"Supply-shock years worst {bt['watch_worst'] * 100:.2f}% (watch {WATCH_LIMIT:.0%}).")
     if not bt["watch_ok"]:
