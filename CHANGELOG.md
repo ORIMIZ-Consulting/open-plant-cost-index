@@ -23,6 +23,9 @@ All notable changes to OPCI are listed here. Code versions and data releases are
 - Location ranges between two non-reference places combined by root sum of squares of relative deviations. Step-rule rows carry `as_of` 2026 and the owner-approved step trails. OIES group factors checked against Songhurst (2018) NG 137, with figure and page numbers: no mismatches.
 - Python interface (`opci/api.py`): `escalation`, `location`, `combined`, `series`, `format_factor`. Every result carries version, data date, investment type, productivity setting and index source, plus part-year and supply-shock notes.
 - Command line (`opci factor`, `opci series`, `opci refresh`, `opci validate`). Series output as CSV or JSON.
+- Overrides (`opci/overrides.py`): `private_cepci.csv` and `private_paid_<name>.csv`, with coverage, gap and jump checks. No gap filling.
+- Refresh checks (`opci/checks.py`): stale series (6 months, reported), discontinued series (12 months or failed download, fails), revisions above 0.5% (reported, saved in `refresh_report.json`). Offline fallback to the cached snapshot.
+- Data releases (`opci/release.py`): `data/releases/data-YYYY-MM/` with annual and quarterly CSV and JSON, `revised` flags and a release note; tagged by the refresh Action. `read_release()` for pinning. First release: `data-2026-09`.
 
 ### Changed
 - README and METHOD.md describe the scale as checked against public CEPCI values.

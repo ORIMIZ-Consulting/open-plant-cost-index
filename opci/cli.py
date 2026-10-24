@@ -39,7 +39,8 @@ def _settings(args):
 
 def cmd_factor(args):
     result = api.combined(base=args.base, target=args.target, to=args.location,
-                          frm=getattr(args, "from"), **_settings(args))
+                          frm=getattr(args, "from"), paid_name=args.paid_name,
+                          private_folder=args.private_dir, **_settings(args))
     if args.json:
         print(json.dumps(result, indent=2))
     else:
@@ -90,6 +91,10 @@ def main(argv=None):
     f.add_argument("--location", default=REFERENCE, help="target location code (default US-GC)")
     f.add_argument("--from", default=REFERENCE, help="base location code (default US-GC)")
     f.add_argument("--json", action="store_true", help="print JSON instead of text")
+    f.add_argument("--paid-name", default=None,
+                   help="with --index-source paid: <name> in private_paid_<name>.csv")
+    f.add_argument("--private-dir", default=None,
+                   help="folder holding private_* override files (default: current folder or OPCI_PRIVATE_DIR)")
     _common(f)
     f.set_defaults(func=cmd_factor)
 
@@ -102,7 +107,8 @@ def main(argv=None):
     s.set_defaults(func=cmd_series)
 
     r = sub.add_parser("refresh", help="pull the latest data from FRED into a new snapshot")
-    r.set_defaults(func=lambda a: fred.main([]))
+    r.add_argument("--strict", action="store_true", help="fail when FRED cannot be reached")
+    r.set_defaults(func=lambda a: fred.main(["--strict"] if a.strict else []))
 
     v = sub.add_parser("validate", help="back-test against public CEPCI values; write VALIDATION.md")
     v.set_defaults(func=lambda a: validate.main([]))

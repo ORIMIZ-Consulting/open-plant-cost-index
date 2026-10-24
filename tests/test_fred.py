@@ -50,10 +50,20 @@ def test_snapshot_is_never_overwritten(tmp_path):
 
 def test_failed_series_fails_loudly(monkeypatch):
     def boom(fred_id, api_key=None):
-        raise fred.FredError("gone")
+        if fred_id == "PCU332410332410":
+            raise fred.FredError("gone")
+        return [("2026-09-01", 1.0)]
     monkeypatch.setattr(fred, "fetch_series", boom)
     with pytest.raises(fred.FredError, match="replacement rule"):
-        fred.pull_all([{"code": "HX", "fred_id": "PCU332410332410"}])
+        fred.pull_all([{"code": "HX", "fred_id": "PCU332410332410"}, {"code": "MACH", "fred_id": "WPU114"}])
+
+
+def test_all_series_failing_means_offline(monkeypatch):
+    def down(fred_id, api_key=None):
+        raise fred.FredError("connection refused")
+    monkeypatch.setattr(fred, "fetch_series", down)
+    with pytest.raises(fred.FredOffline):
+        fred.pull_all([{"code": "HX", "fred_id": "PCU332410332410"}, {"code": "MACH", "fred_id": "WPU114"}])
 
 
 def test_series_list_has_12_series():

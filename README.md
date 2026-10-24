@@ -71,9 +71,30 @@ series(start=2008, freq="annual")
 
 Dates are a year (`2011`) or a year and quarter (`2011Q2`). The target date defaults to the latest full quarter. Location codes are in [location/factors.csv](location/factors.csv).
 
+## Pinning a data release
+
+Each monthly refresh that passes its checks makes a data release, for example `data-2026-09`. Releases are never changed after they are made. A tool that uses OPCI must name a release, never "latest", so its estimates do not change overnight:
+
+- Files: `data/releases/data-2026-09/opci_general_annual.csv` (also quarterly, and JSON). Each release has a `RELEASE_NOTE.md` and a git tag of the same name.
+- Python: `from opci import read_release; read_release("data-2026-09")`
+
 ## Using your own CEPCI or paid data
 
-If you hold a CEPCI subscription or paid index data, you can use it in place of the open index. Put the values in a local file named `private_cepci.csv` or `private_paid_<name>.csv`. These files are ignored by git and must never be committed or published. They are your licensed data.
+If you hold a CEPCI subscription or paid index data, you can use it in place of the open index. Put the values in a local file:
+
+- `private_cepci.csv` for your CEPCI values, or
+- `private_paid_<name>.csv` for paid data, for example `private_paid_ucci.csv`.
+
+The format is `period,value`, with periods as years (`2011`) or years and quarters (`2011Q2`), one kind per file. The tool looks in the current folder, or in the folder named by the `OPCI_PRIVATE_DIR` environment variable.
+
+```
+opci factor --base 2011 --target 2025 --location ID-KAL --index-source private_cepci
+opci factor --base 2011 --target 2025 --index-source paid --paid-name ucci
+```
+
+The tool says what the file covers, warns about gaps and jumps above 25% between periods, and never fills gaps. The output names the file used.
+
+These files are ignored by git, blocked by a pre-commit check and checked again by the tests. Never commit or publish them. They are your licensed data.
 
 ## Limits
 

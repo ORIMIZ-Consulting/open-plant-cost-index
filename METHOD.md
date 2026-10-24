@@ -105,6 +105,23 @@ One point is added each year when Chemical Engineering publishes the new annual 
 
 The default is 2% a year on labour and engineering. The validation page also shows the rate fitted jointly with the scale, as a check only. The default does not move with that fit.
 
+## 6a. Data refresh and releases
+
+A GitHub Action runs on the 20th of each month. Users can also run `opci refresh`.
+
+1. **Stale series.** A series with no new data for more than 6 months is reported.
+2. **Discontinued series.** A series that fails to download, or has no new data for more than 12 months, fails the refresh. The fix is a replacement rule in `escalation/series.yaml`, like the pumps rule.
+3. **Revisions.** BLS revises recent months. Any past value that moved more than 0.5% since the last snapshot is reported and saved in the new snapshot's `refresh_report.json`.
+4. **Back-test.** Fails if the worst error on the normal years is above 8% (section 5.2).
+
+If FRED cannot be reached, OPCI keeps using the latest cached snapshot and says so. Every output names the snapshot it used. Snapshots are never overwritten.
+
+Each refresh that passes makes a data release named by its data month, for example `data-2026-09`, with annual and quarterly files, a release note and a git tag. Releases are never changed. If the data for the same month change, a new release is made with a `-2` suffix. Each row carries a `revised` flag when its value moved more than 0.5% since the previous release.
+
+## 6b. Overrides
+
+Users with their own CEPCI values or paid index data can use them in place of the open index (`private_cepci.csv` or `private_paid_<name>.csv`, format `period,value`). The tool reports what the file covers, warns about gaps and about jumps above 25% between periods, and never fills gaps. Productivity adjustment and scale do not apply to override values. The location factor and combined factor work as usual. These files are never committed or published.
+
 ## 7. Limits
 
 - OPCI is checked against public CEPCI values. It is not CEPCI. Expect differences of up to about 5% in normal years, and more in supply-shock years.

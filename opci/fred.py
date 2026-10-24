@@ -23,6 +23,8 @@ from pathlib import Path
 
 import yaml
 
+from opci import checks
+
 ROOT = Path(__file__).resolve().parent.parent
 SERIES_FILE = ROOT / "escalation" / "series.yaml"
 SNAPSHOT_DIR = ROOT / "data" / "snapshots"
@@ -35,6 +37,10 @@ START_DATE = "2000-01-01"
 
 class FredError(RuntimeError):
     pass
+
+
+class FredOffline(FredError):
+    """FRED could not be reached at all; the cached snapshot stays in use."""
 
 
 def load_series_list(path=SERIES_FILE):
@@ -171,6 +177,8 @@ def pull_all(series_list=None, api_key=None):
         except FredError as exc:
             failed.append(s["fred_id"])
             print(f"  {s['code']:<7}FAILED: {exc}", file=sys.stderr)
+    if failed and len(failed) == len(series_list):
+        raise FredOffline("FRED could not be reached for any series.")
     if failed:
         raise FredError(
             "Series failed to download: " + ", ".join(failed)
@@ -182,17 +190,56 @@ def pull_all(series_list=None, api_key=None):
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Pull OPCI series from FRED into a cached snapshot.")
     ap.add_argument("--out", default=str(SNAPSHOT_DIR), help="snapshot folder (default data/snapshots)")
+    ap.add_argument("--strict", action="store_true",
+                    help="fail when FRED cannot be reached (used by the refresh Action)")
     args = ap.parse_args(argv)
     api_key = os.environ.get("FRED_API_KEY") or None
     method = "fred_api" if api_key else "fred_csv"
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    try:
+        previous = latest_snapshot(args.out)
+    except (FredError, FileNotFoundError):
+        previous = None
+
     print(f"Pulling {len(load_series_list())} series from FRED ({method})")
     try:
         data = pull_all(api_key=api_key)
+    except FredOffline as exc:
+        if previous is None:
+            print(f"ERROR: {exc} No cached snapshot to fall back on.", file=sys.stderr)
+            return 1
+        _, manifest = load_snapshot(previous)
+        print(f"{exc} OPCI keeps using the cached snapshot {previous.name} "
+              f"(data to {manifest['data_to']}).", file=sys.stderr)
+        return 1 if args.strict else 0
     except FredError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
+
+    # Check 1 and 2: stale and discontinued series.
+    stale = checks.stale_series(data, today)
+    for s in stale:
+        print(f"STALE: {s['fred_id']} has no new data since {s['last'][:7]} ({s['months']} months).")
+    gone = [s for s in stale if s["discontinued"]]
+    if gone:
+        print("ERROR: possibly discontinued (no new data for more than "
+              f"{checks.DISCONTINUED_MONTHS} months): " + ", ".join(s["fred_id"] for s in gone)
+              + ". Add a replacement rule in escalation/series.yaml (see the pumps rule).", file=sys.stderr)
+        return 1
+
+    # Check 3: revisions since the last snapshot.
+    revised = checks.revisions(load_snapshot(previous)[0], data) if previous else []
+    for r in revised:
+        print(f"REVISED: {r['fred_id']} {r['date'][:7]} {r['old']:g} -> {r['new']:g} ({r['change'] * 100:+.2f}%)")
+
     folder = write_snapshot(data, method, args.out)
-    print(f"Snapshot written to {folder}")
+    if previous is not None and folder == previous:
+        print(f"No change in data. Latest snapshot stays {folder.name}.")
+        return 0
+    report = {"checked_at": today, "previous_snapshot": previous.name if previous else None,
+              "stale": stale, "revisions": revised}
+    (folder / "refresh_report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    print(f"Snapshot written to {folder} ({len(stale)} stale, {len(revised)} revised values).")
     return 0
 
 

@@ -1,6 +1,7 @@
-# Pull the 12 BLS series from FRED and save a cached snapshot in data/snapshots/.
+# Pull the 12 BLS series from FRED, run the refresh checks and the back-test,
+# then save the snapshot and a data release (data/releases/data-YYYY-MM) with a tag.
 # Runs once a month, on demand (Actions tab > Refresh data > Run workflow),
-# and when the pull code or series list changes on main.
+# and when the pull, check or release code changes on main.
 # Optional: add a repository secret FRED_API_KEY to use the FRED API instead of CSV.
 name: Refresh data
 
@@ -11,11 +12,9 @@ on:
   push:
     branches: [main]
     paths:
-      - opci/fred.py
-      - opci/validate.py
-      - opci/chart.py
-      - escalation/series.yaml
-      - escalation/public_points.csv
+      - opci/**
+      - escalation/**
+      - location/**
       - .github/workflows/refresh.yml
 
 permissions:
@@ -30,6 +29,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # tags, to see which releases are already tagged
 
       - uses: actions/setup-python@v5
         with:
@@ -38,27 +39,41 @@ jobs:
       - name: Install
         run: pip install -e ".[dev]"
 
+      # Includes the check that no private_* file is tracked.
       - name: Tests
         run: pytest -q
 
-      - name: Pull from FRED
+      # Checks 1 to 3: stale series (reported), discontinued series (fails),
+      # revisions above 0.5% since the last snapshot (reported).
+      # --strict: fail if FRED cannot be reached, so an outage is seen.
+      - name: Pull from FRED and check
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
-        run: python -m opci.fred --out data/snapshots
+        run: python -m opci.fred --out data/snapshots --strict
 
-      # Fails if the worst error on the normal years is above 8%.
+      # Check 4: fails if the worst error on the normal years is above 8%.
       # Supply-shock years are reported against the 10% watch limit only.
       - name: Back-test
         run: python -m opci.validate
 
-      - name: Commit snapshot
+      - name: Data release
+        run: python -m opci.release
+
+      - name: Commit and tag
         run: |
           git config user.name "opci-refresh[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/snapshots VALIDATION.md docs/validation_chart.svg
+          git add data/snapshots data/releases VALIDATION.md docs/validation_chart.svg
           if git diff --cached --quiet; then
             echo "No change in data."
           else
-            git commit -m "Data snapshot $(date -u +%Y-%m-%d)"
+            git commit -m "Data refresh $(date -u +%Y-%m-%d)"
             git push
           fi
+          for d in data/releases/data-*/; do
+            name=$(basename "$d")
+            if ! git rev-parse -q --verify "refs/tags/$name" >/dev/null; then
+              git tag -a "$name" -m "OPCI data release $name"
+              git push origin "refs/tags/$name"
+            fi
+          done

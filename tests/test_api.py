@@ -74,11 +74,6 @@ def test_productivity_off_label():
     assert "productivity off" in text
 
 
-def test_private_sources_not_yet_available():
-    with pytest.raises(NotImplementedError):
-        escalation("2011", "2025", index_source="private_cepci", snapshot=SNAP)
-
-
 def test_series_rows_and_components():
     t = series(start=2019, end=2019, snapshot=SNAP)
     (row,) = t["rows"]
