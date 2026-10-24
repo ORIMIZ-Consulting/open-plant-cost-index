@@ -28,19 +28,48 @@ The full method is in [METHOD.md](METHOD.md). The check against public CEPCI val
 
 ## Quick start
 
-Coming with version 1.0.0. The planned interface:
+Until version 1.0.0 is on PyPI, install from a clone of this repository:
 
 ```
-pip install opci
-opci factor --base 2011 --target 2026Q3 --location ID-KAL
+git clone https://github.com/ORIMIZ-Consulting/open-plant-cost-index.git
+cd open-plant-cost-index
+pip install -e .
 ```
+
+Command line:
+
+```
+opci factor --base 2011 --target 2026 --location ID-KAL
+opci factor --base 2015 --location ID-KAL --from AU-NW
+opci series --start 2008 --freq quarterly --out opci_general.csv
+opci refresh
+opci validate
+```
+
+Sample output:
+
+```
+Open Plant Cost Index (OPCI) v0.1.0 | Maintained by ORIMIZ Consulting
+Data to 2026-09 | investment type: general | productivity 2% | index source: open
+Escalation 2011 to 2026:   x1.53
+Location US Gulf Coast to East Kalimantan, Indonesia:   x1.20  (range 1.08 to 1.38, confidence: medium)
+Combined factor:   x1.84
+Sources: BLS via FRED (12 series); location: ID-KAL: step rule (see location table, version 0.1.0)
+Note: 2026 is a part year (January to September average).
+```
+
+Python:
 
 ```python
-from opci import escalation, location, combined, series
+from opci import escalation, location, combined, series, format_factor
 
 escalation(base="2011", target="2026Q3")
-location(to="ID-KAL", frm="US-GC")
+location(to="ID-KAL", frm="AU-NW")
+print(format_factor(combined(base="2011", target="2026", to="ID-KAL")))
+series(start=2008, freq="annual")
 ```
+
+Dates are a year (`2011`) or a year and quarter (`2011Q2`). The target date defaults to the latest full quarter. Location codes are in [location/factors.csv](location/factors.csv).
 
 ## Using your own CEPCI or paid data
 

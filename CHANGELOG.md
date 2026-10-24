@@ -21,6 +21,8 @@ All notable changes to OPCI are listed here. Code versions and data releases are
 
 - Location module, version 0.1.0 (`location/`, `opci/locations.py`): 13 locations from the decided starting table, with range, confidence, method, source and `as_of` year. Factor A to B = factor(B) / factor(A). Own method note and validation page.
 - Location ranges between two non-reference places combined by root sum of squares of relative deviations. Step-rule rows carry `as_of` 2026 and the owner-approved step trails. OIES group factors checked against Songhurst (2018) NG 137, with figure and page numbers: no mismatches.
+- Python interface (`opci/api.py`): `escalation`, `location`, `combined`, `series`, `format_factor`. Every result carries version, data date, investment type, productivity setting and index source, plus part-year and supply-shock notes.
+- Command line (`opci factor`, `opci series`, `opci refresh`, `opci validate`). Series output as CSV or JSON.
 
 ### Changed
 - README and METHOD.md describe the scale as checked against public CEPCI values.
