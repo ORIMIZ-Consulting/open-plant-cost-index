@@ -95,4 +95,9 @@ jobs:
       - name: Create GitHub release (Zenodo archives it)
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" dist/* --title "OPCI $GITHUB_REF_NAME" --notes-file CHANGELOG.md --verify-tag
+        run: |
+          # Release notes: only the CHANGELOG section for this version, e.g. "## 1.0.0 (...)".
+          ver="${GITHUB_REF_NAME#v}"
+          awk -v h="## $ver " 'index($0, h) == 1 {f = 1; print; next} /^## / {if (f) exit} f' CHANGELOG.md > notes.md
+          test -s notes.md || { echo "No CHANGELOG section for $ver"; exit 1; }
+          gh release create "$GITHUB_REF_NAME" dist/* --title "OPCI $GITHUB_REF_NAME" --notes-file notes.md --verify-tag

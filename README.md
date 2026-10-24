@@ -4,7 +4,7 @@ A free, open source plant cost index, checked against the Chemical Engineering P
 
 Maintained by ORIMIZ Consulting.
 
-> **Status:** release candidate 1.0.0-rc1. Version 1.0.0 is not released yet and is not on PyPI yet. Numbers may change until then.
+> **Status:** version 1.0.0. Pin a data release (see below) so your estimates do not change when the data refresh.
 
 ## What it does
 
@@ -30,16 +30,8 @@ The full method is in [METHOD.md](METHOD.md). The check against public CEPCI val
 
 ## Quick start
 
-Once version 1.0.0 is on PyPI:
-
 ```
 pip install opci
-```
-
-Until then, install the release candidate from GitHub:
-
-```
-pip install "opci @ git+https://github.com/ORIMIZ-Consulting/open-plant-cost-index.git@v1.0.0-rc1"
 ```
 
 The package carries its own copy of the data, so it works outside a clone. `opci refresh` saves newer data in `~/.opci` (or the folder named by `OPCI_HOME`). To work on OPCI itself, clone the repository and run `pip install -e ".[dev]"`.
@@ -58,13 +50,20 @@ opci validate
 Sample output:
 
 ```
-Open Plant Cost Index (OPCI) v1.0.0rc1 | Maintained by ORIMIZ Consulting
+Open Plant Cost Index (OPCI) v1.0.0 | Maintained by ORIMIZ Consulting
 Data to 2026-09 | investment type: general | productivity 2% | index source: open
 Escalation 2011 to 2026:   x1.53
 Location US Gulf Coast to East Kalimantan, Indonesia:   x1.20  (range 1.08 to 1.38, confidence: medium)
 Combined factor:   x1.84
 Sources: BLS via FRED (12 series, cached snapshot 2026-10-24); location: ID-KAL: step rule (see location table, version 0.1.0)
 Note: 2026 is a part year (January to September average).
+```
+
+If you leave out `--target`, OPCI uses the latest full quarter and says so under the escalation line:
+
+```
+Escalation 2011 to 2026Q3:   x1.56
+Target: 2026Q3 (latest quarter). Use --target 2026 for the year average.
 ```
 
 Python:

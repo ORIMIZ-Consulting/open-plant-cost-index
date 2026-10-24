@@ -1,6 +1,6 @@
 # Validation: OPCI against public CEPCI values
 
-Open Plant Cost Index (OPCI) v1.0.0rc1 | Maintained by ORIMIZ Consulting  
+Open Plant Cost Index (OPCI) v1.0.0 | Maintained by ORIMIZ Consulting  
 Data to 2026-09 | snapshot 2026-10-24 | investment type: general | productivity 2% | index source: open
 
 This page compares OPCI with Chemical Engineering Plant Cost Index (CEPCI) annual averages that Chemical Engineering has published free. Each value is cited to its source. The page is rebuilt on every data refresh by `python -m opci.validate`.

@@ -44,6 +44,7 @@ def _override_escalation(base, target, investment, productivity, index_source, p
     path = override_path(index_source, paid_name, private_folder)
     values, freq, warnings = load_override(path)
     periods = sorted(values)
+    default_target = target is None
     target = target or periods[-1]
     picked = []
     for date, label in ((base, "base"), (target, "target")):
@@ -72,7 +73,8 @@ def _override_escalation(base, target, investment, productivity, index_source, p
         "source_note": f"user override file {path.name} (the user's licensed data, not part of OPCI)",
         "scale": "override",
         "scale_2019": values.get("2019"),
-        "flags": ["override"],
+        "flags": ["override"] + (["default_target"] if default_target else []),
+        "target_note": f"Target: {tp} (last period in {path.name})." if default_target else None,
         "notes": warnings,
     }
 
@@ -135,6 +137,7 @@ def escalation(base, target=None, investment="general", productivity=DEFAULT_PRO
         return _override_escalation(base, target, investment, productivity, index_source,
                                     paid_name, private_folder)
     snapshot = Path(snapshot) if snapshot else latest_snapshot()
+    default_target = target is None
     target = target or latest_full_quarter(investment, snapshot)
     (bf, bp), (tf, tp) = parse_period(base), parse_period(target)
     anchor = _anchor(scale, investment, productivity, snapshot)
@@ -157,6 +160,10 @@ def escalation(base, target=None, investment="general", productivity=DEFAULT_PRO
     if shock:
         flags.append("supply_shock")
         notes.append(shock)
+    target_note = None
+    if default_target:
+        flags.append("default_target")
+        target_note = f"Target: {tp} (latest quarter). Use --target {tp[:4]} for the year average."
     return {
         "factor": t["value"] / b["value"],
         "base": bp,
@@ -166,6 +173,7 @@ def escalation(base, target=None, investment="general", productivity=DEFAULT_PRO
         **_meta(manifest, snapshot, investment, productivity, index_source, scale, anchor),
         "source_note": _open_source_note(snapshot),
         "flags": sorted(set(flags)),
+        "target_note": target_note,
         "notes": notes,
     }
 
@@ -238,6 +246,8 @@ def format_factor(result):
     loc = result.get("location")
     lines = header(esc)
     lines.append(f"Escalation {esc['base']} to {esc['target']}:   x{esc['factor']:.2f}")
+    if esc.get("target_note"):
+        lines.append(esc["target_note"])
     sources = f"Sources: {esc['source_note']}"
     if loc:
         lines.append(f"Location {loc['frm_name']} to {loc['to_name']}:   x{loc['factor']:.2f}  "

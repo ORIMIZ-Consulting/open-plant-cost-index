@@ -78,6 +78,13 @@ def test_quarterly_file_needs_quarter_dates(tmp_path):
         escalation("2011", "2011Q2", index_source="private_cepci", private_folder=tmp_path)
 
 
+def test_default_target_in_override_is_stated(tmp_path):
+    _write(tmp_path, "private_cepci.csv", "2011,100\n2012,102\n")
+    r = escalation("2011", index_source="private_cepci", private_folder=tmp_path)
+    assert r["target"] == "2012"
+    assert r["target_note"] == "Target: 2012 (last period in private_cepci.csv)."
+
+
 def test_paid_file_by_name_and_single_file(tmp_path):
     _write(tmp_path, "private_paid_ucci.csv", "2020,100\n2021,120\n")
     assert override_path("paid", "ucci", tmp_path).name == "private_paid_ucci.csv"

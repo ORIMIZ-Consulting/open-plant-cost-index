@@ -47,6 +47,16 @@ def test_default_target_is_latest_full_quarter():
     assert escalation("2011", snapshot=SNAP)["target"] == "2026Q3"
 
 
+def test_default_target_is_stated():
+    r = escalation("2011", snapshot=SNAP)
+    note = "Target: 2026Q3 (latest quarter). Use --target 2026 for the year average."
+    assert r["target_note"] == note and "default_target" in r["flags"]
+    lines = format_factor(r).splitlines()
+    assert lines[lines.index(note) - 1].startswith("Escalation 2011 to 2026Q3:")
+    given = escalation("2011", "2026Q3", snapshot=SNAP)
+    assert given["target_note"] is None and "Target:" not in format_factor(given)
+
+
 def test_part_year_is_labelled():
     r = escalation("2011", "2026", snapshot=SNAP)
     assert "part_year" in r["flags"]

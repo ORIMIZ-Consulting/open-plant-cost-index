@@ -2,12 +2,28 @@
 
 All notable changes to OPCI are listed here. Code versions (v1.0.0) and data releases (data-2026-09) are tracked apart.
 
-## 1.0.0-rc1 (24 October 2026): release candidate
+## Roadmap
 
-First release candidate of the Open Plant Cost Index (OPCI). Maintained by ORIMIZ Consulting. Not yet on PyPI.
+### 1.1 (planned)
+- `series()` returns a pandas table when pandas is installed. The current format (`{'meta', 'rows'}`) stays as the fallback when it is not.
+- LNG (liquefied natural gas) weights, once their public basis is documented.
+- Quarterly data releases.
+- More locations: Mozambique, Nigeria, Egypt, Mexico (Pacific coast), Argentina, Arctic Norway, Saudi Arabia.
+
+### 2.0 (planned)
+- Imported and local cost split, World Bank International Comparison Program (ICP) cross-check, local currency output.
+
+## 1.0.0 (24 October 2026)
+
+First release of the Open Plant Cost Index (OPCI). Maintained by ORIMIZ Consulting.
+
+### Changes since 1.0.0-rc1
+- When the target date is not given, the output says so under the escalation line, for example "Target: 2026Q3 (latest quarter). Use --target 2026 for the year average." Results carry a `default_target` flag and a `target_note`.
+- README: estimating context (AACE International Class 5, FEL 1) and the Scale line reworded.
+- The GitHub release notes now hold only the section for the tagged version.
 
 ### What OPCI gives you
-- **Escalation** for general process plant, by year or quarter, from 2008 to the latest month. Built from 12 public domain US Bureau of Labor Statistics (BLS) series pulled through FRED (Federal Reserve Economic Data), weighted by the published 2002 CEPCI component weights, with a 2% a year productivity adjustment on labour and engineering (switchable).
+- **Escalation** for general process plant, by year or quarter, from 2008 to the latest month. Built from 12 public domain US Bureau of Labor Statistics (BLS) series pulled through FRED (Federal Reserve Economic Data), weighted by the published 2002 Chemical Engineering Plant Cost Index (CEPCI) component weights, with a 2% a year productivity adjustment on labour and engineering (switchable).
 - **Scale** checked against public CEPCI values on 14 normal years (2008 to 2020 and 2023): OPCI 2019 = 612.9. Switch to 2019 = 100 if you prefer. The scale never changes an escalation factor.
 - **Location factors** for 13 places against the US Gulf Coast, each with a range, confidence level, method, source and `as_of` year. Moving a cost between two places uses factor(B) / factor(A), with ranges combined by root sum of squares.
 - **Combined factor**: escalation times location, with both shown apart.
@@ -42,5 +58,11 @@ First release candidate of the Open Plant Cost Index (OPCI). Maintained by ORIMI
 
 ### Series replacements
 - Pumps: BLS series PCU333911333911 ended in 2017. Compressors (PCU333912333912) stand in for it.
+
+CEPCI is a trademark of Chemical Engineering magazine. OPCI is not affiliated with or endorsed by Chemical Engineering.
+
+## 1.0.0-rc1 (24 October 2026)
+
+Release candidate. Same content as 1.0.0 above, without the changes listed under "Changes since 1.0.0-rc1". Tagged, not published to PyPI.
 
 CEPCI is a trademark of Chemical Engineering magazine. OPCI is not affiliated with or endorsed by Chemical Engineering.
