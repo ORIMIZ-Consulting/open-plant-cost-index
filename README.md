@@ -8,6 +8,8 @@ Maintained by ORIMIZ Consulting.
 
 ## What it does
 
+At the very start of a project, before any engineering is done, an owner needs a first cost estimate to decide whether the idea is worth pursuing. AACE International (Association for the Advancement of Cost Engineering) calls this a Class 5 estimate, made in the pre-feasibility phase, also known as FEL 1 (Front-End Loading 1). It is usually built from analogue projects: plants already built, whose known costs are adjusted (normalized) to match the new project. Two of the key adjustments are time, because costs change from year to year, and place, because costs differ from country to country. OPCI provides both.
+
 OPCI answers two questions about process plant construction costs:
 
 1. **Time.** How much have plant costs changed between year A and year B? This is escalation.
@@ -21,7 +23,7 @@ It is built for students, small consultancies, researchers and independent estim
 
 - **Escalation** uses 12 price and wage series from the US Bureau of Labor Statistics (BLS), pulled through FRED (Federal Reserve Economic Data, St. Louis Fed). All are public domain. See [DATA_NOTICE.md](DATA_NOTICE.md).
 - **Weights** follow the published 2002 CEPCI component weights, mapped to the 12 series.
-- **Scale.** The level of the index is checked against public CEPCI values. It has no effect on any escalation factor.
+- **Scale.** The level of the index estimated by OPCI is checked against public CEPCI values. The scale has no effect on any escalation factor.
 - **Location factors** come from published group factors (Oxford Institute for Energy Studies) and a stated step rule. Each factor has a range, a confidence level and a source.
 
 The full method is in [METHOD.md](METHOD.md). The check against public CEPCI values is in [VALIDATION.md](VALIDATION.md).
