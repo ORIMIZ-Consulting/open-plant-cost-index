@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from opci.index import average, compute, load_weights
+from opci.index import average, compute, load_weights, supply_shock_warning
 
 ROOT = Path(__file__).resolve().parent.parent
 # The prototype check is pinned to the first snapshot. Later snapshots carry BLS revisions.
@@ -57,6 +57,20 @@ def test_quarterly_series_brackets_annual():
     rows, _ = compute(freq="quarterly", snapshot=FIRST_SNAPSHOT, start=2019, end=2019)
     assert [r["period"] for r in rows] == ["2019Q1", "2019Q2", "2019Q3", "2019Q4"]
     assert sum(r["value"] for r in rows) / 4 == pytest.approx(607.5, abs=0.5)
+
+
+def test_no_warning_outside_supply_shock_years():
+    assert supply_shock_warning("2011", "2026Q3") is None
+
+
+def test_warning_for_base_in_supply_shock_year():
+    msg = supply_shock_warning("2022", "2026Q3")
+    assert "about 5 to 8% below CEPCI" in msg and "overstated" in msg
+
+
+def test_warning_for_target_in_supply_shock_year():
+    msg = supply_shock_warning("2015", "2021Q4")
+    assert "about 5 to 8% below CEPCI" in msg and "understated" in msg
 
 
 def test_unknown_investment_type():

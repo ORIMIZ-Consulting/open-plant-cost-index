@@ -12,7 +12,9 @@ on:
     branches: [main]
     paths:
       - opci/fred.py
+      - opci/validate.py
       - escalation/series.yaml
+      - escalation/public_points.csv
       - .github/workflows/refresh.yml
 
 permissions:
@@ -43,11 +45,16 @@ jobs:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         run: python -m opci.fred --out data/snapshots
 
+      # Fails if the worst error on the normal years is above 8%.
+      # Supply-shock years are reported against the 10% watch limit only.
+      - name: Back-test
+        run: python -m opci.validate
+
       - name: Commit snapshot
         run: |
           git config user.name "opci-refresh[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/snapshots
+          git add data/snapshots VALIDATION.md
           if git diff --cached --quiet; then
             echo "No change in data."
           else

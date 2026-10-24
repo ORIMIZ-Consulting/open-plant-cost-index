@@ -13,6 +13,10 @@ All notable changes to OPCI are listed here. Code versions and data releases are
 - Escalation calculation (`opci/index.py`): annual and quarterly series, productivity adjustment, anchor setting, part period flag. Reproduces the prototype values (spec section 6.6) within 0.06 from the 2026-10-24 snapshot.
 - Public calibration points (`escalation/public_points.csv`): 16 CEPCI annual averages, 2008 to 2023, each with its public source. No public value found yet for 2024 or 2025.
 - Best-fit scale (`opci/calibrate.py`): least squares on the log ratio, plus a joint fit of the productivity rate as a check.
+- Supply-shock years 2021 and 2022: left out of the scale fit, shown on the validation page against a 10% watch limit that reports only. The 8% fail limit applies to the 14 normal years. Fitted scale: OPCI 2019 = 612.9. Worst error on normal years 5.5% (2016).
+- Supply-shock warning when a base or target date falls in 2021 or 2022.
+- Back-test and validation page (`opci/validate.py`, `VALIDATION.md`), run by the refresh Action.
+- METHOD.md.
 
 ### Changed
 - LICENSE copyright holder corrected to Syed Zia Haider.

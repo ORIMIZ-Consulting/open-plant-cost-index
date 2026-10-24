@@ -20,6 +20,33 @@ BASE_YEAR = 2019
 DEFAULT_PRODUCTIVITY = 0.02
 PROTOTYPE_ANCHOR = 607.5   # public CEPCI 2019 annual average, used by the prototype
 
+# Supply-shock years: left out of the scale fit, checked on a watch limit (METHOD.md).
+SUPPLY_SHOCK_YEARS = (2021, 2022)
+SUPPLY_SHOCK_GAP = "about 5 to 8%"
+
+
+def supply_shock_warning(base, target):
+    """Return a warning when the base or target date falls in a supply-shock year, else None.
+
+    OPCI ran low in those years. A low base value overstates escalation from it;
+    a low target value understates escalation to it.
+    """
+    in_base = int(str(base)[:4]) in SUPPLY_SHOCK_YEARS
+    in_target = int(str(target)[:4]) in SUPPLY_SHOCK_YEARS
+    if not (in_base or in_target):
+        return None
+    years = " and ".join(str(y) for y in SUPPLY_SHOCK_YEARS)
+    lines = [f"Warning: {years} are supply-shock years. "
+             f"OPCI ran {SUPPLY_SHOCK_GAP} below CEPCI in those years."]
+    if in_base and in_target:
+        lines.append(f"Both the base date {base} and the target date {target} fall in them, "
+                     "so the two effects partly cancel.")
+    elif in_base:
+        lines.append(f"The base date {base} falls in them, so escalation from it may be overstated.")
+    else:
+        lines.append(f"The target date {target} falls in them, so escalation to it may be understated.")
+    return " ".join(lines)
+
 
 def load_weights(investment="general"):
     path = ROOT / "escalation" / f"weights_{investment}.yaml"

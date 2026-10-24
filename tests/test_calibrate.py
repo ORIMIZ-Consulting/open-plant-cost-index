@@ -3,8 +3,8 @@ from pathlib import Path
 
 import pytest
 
-from opci.calibrate import POINTS_FILE, fit_joint, fit_scale, load_points
-from opci.index import compute
+from opci.calibrate import FAIL_LIMIT, POINTS_FILE, backtest, fit_joint, fit_scale, load_points
+from opci.index import SUPPLY_SHOCK_YEARS, compute
 
 ROOT = Path(__file__).resolve().parent.parent
 FIRST_SNAPSHOT = ROOT / "data" / "snapshots" / "2026-10-24"
@@ -38,6 +38,26 @@ def test_scale_does_not_change_escalation():
     va = {r["period"]: r["value"] for r in a}
     vb = {r["period"]: r["value"] for r in b}
     assert va["2026"] / va["2011"] == pytest.approx(vb["2026"] / vb["2011"])
+
+
+def test_supply_shock_years_are_watch_points():
+    assert len(load_points(use="fit")) == 14
+    assert tuple(sorted(load_points(use="watch"))) == SUPPLY_SHOCK_YEARS
+
+
+def test_backtest_on_normal_years():
+    bt = backtest(snapshot=FIRST_SNAPSHOT)
+    assert 2021 not in bt["errors"] and 2022 not in bt["errors"]
+    assert bt["passed"] and bt["worst"] <= FAIL_LIMIT
+    assert bt["anchor"] == pytest.approx(612.9, abs=0.1)
+    assert set(bt["watch_errors"]) == {2021, 2022}
+
+
+def test_watch_limit_reports_but_does_not_fail(monkeypatch):
+    import opci.calibrate as cal
+    monkeypatch.setattr(cal, "WATCH_LIMIT", 0.01)
+    bt = cal.backtest(snapshot=FIRST_SNAPSHOT)
+    assert not bt["watch_ok"] and bt["passed"]
 
 
 def test_fit_minimises_mean_log_error():
