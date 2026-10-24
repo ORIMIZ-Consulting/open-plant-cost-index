@@ -5,6 +5,7 @@ source. This module shares no code with the escalation module. The two meet only
 at the combined factor step.
 """
 import csv
+import math
 from pathlib import Path
 
 import yaml
@@ -45,21 +46,41 @@ def _get(table, code):
     return table[code]
 
 
+def _devs(row):
+    """Relative low and high deviations of a row's range from its central factor."""
+    return 1 - row["low"] / row["factor"], row["high"] / row["factor"] - 1
+
+
 def location(to, frm=REFERENCE):
     """Location factor for moving a cost from `frm` to `to`.
 
-    factor = factor(to) / factor(frm). The range is the range of `to`, divided by
-    the central factor of `frm`. Confidence is the lower of the two.
+    factor = factor(to) / factor(frm).
+    From the reference: the range of `to` as it stands in the table.
+    Between two other places: relative deviations combined by root sum of squares,
+      low  dev = sqrt(to_low_dev^2  + frm_high_dev^2)
+      high dev = sqrt(to_high_dev^2 + frm_low_dev^2)
+    applied to the central ratio. Same place: factor 1 with no range.
+    Confidence is the lower of the two.
     """
     table = load_factors()
     sources = load_sources()
     b, a = _get(table, to), _get(table, frm)
     conf = min(a["confidence"], b["confidence"], key=CONFIDENCE_ORDER.index)
     rows = [b] if frm == to or frm == REFERENCE else [a, b]
+    ratio = b["factor"] / a["factor"]
+    if frm == to:
+        low, high = 1.0, 1.0
+    elif frm == REFERENCE:
+        low, high = b["low"], b["high"]
+    else:
+        b_low, b_high = _devs(b)
+        a_low, a_high = _devs(a)
+        low = ratio * (1 - math.hypot(b_low, a_high))
+        high = ratio * (1 + math.hypot(b_high, a_low))
     return {
-        "factor": b["factor"] / a["factor"],
-        "low": b["low"] / a["factor"],
-        "high": b["high"] / a["factor"],
+        "factor": ratio,
+        "low": low,
+        "high": high,
         "confidence": conf,
         "to": to,
         "frm": frm,

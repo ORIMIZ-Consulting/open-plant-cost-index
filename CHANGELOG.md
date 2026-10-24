@@ -20,6 +20,7 @@ All notable changes to OPCI are listed here. Code versions and data releases are
 - Validation chart (`docs/validation_chart.svg`, built by `opci/chart.py`): OPCI line against public CEPCI points, supply-shock years shaded. Follows light and dark themes.
 
 - Location module, version 0.1.0 (`location/`, `opci/locations.py`): 13 locations from the decided starting table, with range, confidence, method, source and `as_of` year. Factor A to B = factor(B) / factor(A). Own method note and validation page.
+- Location ranges between two non-reference places combined by root sum of squares of relative deviations. Step-rule rows carry `as_of` 2026 and the owner-approved step trails. OIES group factors checked against Songhurst (2018) NG 137, with figure and page numbers: no mismatches.
 
 ### Changed
 - README and METHOD.md describe the scale as checked against public CEPCI values.

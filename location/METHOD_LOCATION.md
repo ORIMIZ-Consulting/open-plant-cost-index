@@ -54,16 +54,50 @@ Location factor (A to B) = factor(B) / factor(A)
 
 Example: an Ichthys cost (North West Australia, 1.72) moved to East Kalimantan (1.20) gives x 1.20 / 1.72 = x 0.70.
 
-**Range and confidence for A to B.** The range is the range of B divided by the central factor of A. Confidence is the lower of the two. When A is the US Gulf Coast, this gives B's row exactly as it stands in the table.
+**Range from the US Gulf Coast.** B's range exactly as it stands in the table.
+
+**Range between two other places (decided, 24 October 2026).** Both places carry uncertainty, so the two ranges are combined by root sum of squares of their relative deviations. For each row, the low deviation is 1 - low / factor and the high deviation is high / factor - 1. Then:
+
+```
+low deviation  = sqrt( B_low_dev^2  + A_high_dev^2 )
+high deviation = sqrt( B_high_dev^2 + A_low_dev^2 )
+
+low  = factor(B) / factor(A) x (1 - low deviation)
+high = factor(B) / factor(A) x (1 + high deviation)
+```
+
+A high A pushes the ratio down, so A's high deviation goes with B's low deviation, and the other way round.
+
+Example: North West Australia to East Kalimantan gives x 0.70, with a range of about 0.57 to 0.83.
+
+**Same place.** Moving a cost within one place gives x 1.00 with no range.
+
+**Confidence.** The lower of the two confidence levels.
 
 ## 5. Age of the factors
 
-Every row carries an `as_of` year. The Oxford Institute for Energy Studies (OIES) group factors reflect projects from about 2010 to 2018, so those rows and the step-rule rows built from them carry 2018. The reference row carries 2026.
+Every row carries an `as_of` year.
+
+- Rows taken from the Oxford Institute for Energy Studies (OIES) groups carry 2018. The groups reflect projects from about 2010 to 2018.
+- Step-rule rows carry 2026, the year the judgment was made. Their notes name the starting group and its year.
+- The reference row carries 2026.
+
+## 5a. Step trails (approved by the owner, October 2026)
+
+| Code | Start | Steps | Result |
+|---|---|---|---|
+| ID-KAL | REMOTE 1.30 | -0.10 existing LNG hub (Bontang) | 1.20 |
+| MY-BIN | REMOTE 1.30 | -0.10 existing LNG hub; -0.10 local fabrication yards and skilled local labour | 1.10 |
+| QA-RLF, AE, OM | US-GC 1.00 | +0.10 extreme heat; +0.10 nearly all equipment imported; -0.10 mature LNG hub; -0.10 lower-cost imported labour | 1.00 |
+| CA-BC | REMOTE 1.30 | +0.10 high and scarce skilled labour; +0.10 wet cold climate; -0.10 heavy use of Asian-built modules | 1.40 |
+| RU-SAK | REMOTE 1.30 | +0.10 ice and cold climate; +0.10 little local labour and long logistics; -0.10 existing LNG site and infrastructure at Prigorodnoye | 1.40 (confirmed by practitioner judgment) |
+
+A test checks that each trail starts from the named group's factor and adds up to the row's factor.
 
 ## 6. Python
 
 ```python
-from opci.locations import location
+from opci import location
 
 location(to="ID-KAL")              # from the US Gulf Coast
 location(to="ID-KAL", frm="AU-NW")  # from North West Australia
@@ -73,6 +107,4 @@ Each result gives the factor, range, confidence, method, full source, `as_of`, n
 
 ## 7. Open items
 
-- The OIES figure and page for each published group factor are not yet checked against the paper.
-- Step trails (which group each step-rule row started from, and each 0.10 step) are not yet written in `notes`.
 - Cross-check against World Bank ICP construction price levels: version 2.

@@ -4,10 +4,10 @@ REFERENCE: >
   Coast = 1.00.
 OIES-NG137: >
   Songhurst, B. (2018). LNG Plant Cost Reduction 2014-18. Oxford Institute for
-  Energy Studies, OIES Paper NG 137. Location factor analysis (USA = 100%).
-  Group factors as carried into the OPCI starting table (owner's Scenario C work,
-  October 2026). Figure and page reference not yet checked against the paper.
+  Energy Studies, OIES Paper NG 137. Figure 5, Location Factors, p. 12 (USA 100,
+  Yamal 125, PNG 129, Queensland 134, NW Australia 172 per cent) and Figure 16,
+  p. 41 (same values). Remote group 130 per cent: text, p. 12.
 STEP-RULE: >
-  OPCI step rule (location/METHOD_LOCATION.md, section 3), starting from the
-  nearest OIES group factor (Songhurst 2018, OIES NG 137). Owner judgment,
-  Scenario C work, October 2026.
+  OPCI step rule (location/METHOD_LOCATION.md, section 3), starting from the OIES
+  group named in the notes (Songhurst 2018, OIES NG 137, p. 12). Step trail
+  approved by the owner, October 2026.

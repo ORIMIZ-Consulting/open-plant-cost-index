@@ -45,6 +45,40 @@ def test_a_to_b_is_ratio():
             assert location(to=b, frm=a)["factor"] == pytest.approx(t[b]["factor"] / t[a]["factor"])
 
 
+def test_range_between_two_places_root_sum_of_squares():
+    # Owner check: AU-NW to ID-KAL gives x0.70, about 0.57 to 0.83.
+    r = location(to="ID-KAL", frm="AU-NW")
+    assert round(r["factor"], 2) == 0.70
+    assert r["low"] == pytest.approx(0.57, abs=0.005) and r["high"] == pytest.approx(0.83, abs=0.01)
+    b_low, b_high = 1 - 1.08 / 1.20, 1.38 / 1.20 - 1
+    a_low, a_high = 1 - 1.55 / 1.72, 1.98 / 1.72 - 1
+    ratio = 1.20 / 1.72
+    assert r["low"] == pytest.approx(ratio * (1 - (b_low ** 2 + a_high ** 2) ** 0.5))
+    assert r["high"] == pytest.approx(ratio * (1 + (b_high ** 2 + a_low ** 2) ** 0.5))
+
+
+def test_same_place_has_no_range():
+    r = location(to="AU-NW", frm="AU-NW")
+    assert (r["factor"], r["low"], r["high"]) == (1.0, 1.0, 1.0)
+
+
+def test_step_rule_rows_have_trail_and_2026():
+    table = load_factors()
+    for code, r in table.items():
+        if r["method"].startswith("step rule"):
+            assert r["as_of"] == 2026, code
+            # "Start REMOTE 1.30 (OIES ..., 2018); -0.10 ...; +0.10 ... = 1.40."
+            trail = r["notes"].split(" = ")[0]
+            start, *steps = [s.strip() for s in trail.split(";")]
+            group, value = start.split()[1:3]
+            assert table[group]["factor"] == float(value), code
+            total = float(value) + sum(float(s.split()[0]) for s in steps)
+            assert total == pytest.approx(r["factor"]), code
+            assert f"= {r['factor']:.2f}" in r["notes"], code
+        elif r["method"] == "published group":
+            assert r["as_of"] == 2018, code
+
+
 def test_confidence_is_the_lower():
     assert location(to="REMOTE", frm="ID-KAL")["confidence"] == "low"
     assert location(to="ID-KAL", frm="US-GC")["confidence"] == "medium"
