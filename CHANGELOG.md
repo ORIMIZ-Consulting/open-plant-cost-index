@@ -11,6 +11,8 @@ All notable changes to OPCI are listed here. Code versions and data releases are
 - FRED (Federal Reserve Economic Data) pull (`opci/fred.py`) with cached snapshots in `data/snapshots/`. CSV download by default, FRED API when `FRED_API_KEY` is set.
 - Monthly GitHub Action (`.github/workflows/refresh.yml`) that pulls the data and commits the snapshot.
 - Escalation calculation (`opci/index.py`): annual and quarterly series, productivity adjustment, anchor setting, part period flag. Reproduces the prototype values (spec section 6.6) within 0.06 from the 2026-10-24 snapshot.
+- Public calibration points (`escalation/public_points.csv`): 16 CEPCI annual averages, 2008 to 2023, each with its public source. No public value found yet for 2024 or 2025.
+- Best-fit scale (`opci/calibrate.py`): least squares on the log ratio, plus a joint fit of the productivity rate as a check.
 
 ### Changed
 - LICENSE copyright holder corrected to Syed Zia Haider.
