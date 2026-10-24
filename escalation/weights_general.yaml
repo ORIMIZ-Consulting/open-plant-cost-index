@@ -1,0 +1,20 @@
+investment_type: general
+name: General process plant
+status: reviewed
+source: >
+  CEPCI published 2002 component weights, mapped to the 12 OPCI series
+  and scaled from 99.9% to 100%.
+# Weights in percent. Must sum to 100.
+weights:
+  HX: 8.56
+  TANK: 8.56
+  MACH: 6.51
+  VALVE: 4.80
+  PIPE: 4.80
+  INST: 5.31
+  COMP: 3.20
+  ELEC: 3.50
+  STRUCT: 5.31
+  LAB: 29.03
+  ENG: 15.82
+  BLDG: 4.60

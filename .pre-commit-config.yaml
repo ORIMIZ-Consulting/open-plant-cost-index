@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: no-private-files
+        name: Block private_* licensed data files
+        entry: python scripts/check_no_private.py
+        language: system
+        always_run: false
+        pass_filenames: true

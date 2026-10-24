@@ -1,0 +1,61 @@
+# BLS series used by OPCI, pulled through FRED. All public domain.
+# Order matches the weight files.
+series:
+  - code: HX
+    component: Heat exchangers
+    fred_id: PCU332410332410
+    bls_name: Power boiler and heat exchanger manufacturing
+  - code: TANK
+    component: Tanks and vessels
+    fred_id: PCU332420332420
+    bls_name: Metal tank (heavy gauge) manufacturing
+  - code: MACH
+    component: Process machinery
+    fred_id: WPU114
+    bls_name: General purpose machinery and equipment
+  - code: VALVE
+    component: Valves
+    fred_id: PCU332911332911
+    bls_name: Industrial valve manufacturing
+  - code: PIPE
+    component: Pipe
+    fred_id: WPU101706
+    bls_name: Steel pipe and tube
+  - code: INST
+    component: Instruments
+    fred_id: PCU334513334513
+    bls_name: Industrial process control instruments
+  - code: COMP
+    component: Compressors
+    fred_id: PCU333912333912
+    bls_name: Air and gas compressor manufacturing
+  - code: ELEC
+    component: Electrical equipment
+    fred_id: WPU117
+    bls_name: Electrical machinery and equipment
+  - code: STRUCT
+    component: Structural steel
+    fred_id: PCU332312332312
+    bls_name: Fabricated structural metal manufacturing
+  - code: LAB
+    component: Construction labour
+    fred_id: CES2000000008
+    bls_name: Average hourly earnings, construction, production workers
+    productivity_adjusted: true
+  - code: ENG
+    component: Engineering
+    fred_id: PCU541330541330
+    bls_name: Engineering services
+    productivity_adjusted: true
+  - code: BLDG
+    component: Buildings
+    fred_id: PCU236211236211
+    bls_name: New industrial building construction
+
+# Series that ended and what stands in for them.
+replacements:
+  - old_fred_id: PCU333911333911
+    old_component: Pumps
+    ended: 2017
+    replaced_by: PCU333912333912
+    note: Compressors stand in for pumps.

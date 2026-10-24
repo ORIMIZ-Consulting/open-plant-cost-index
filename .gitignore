@@ -1,0 +1,25 @@
+# User licensed data. Never commit. See README "Using your own CEPCI or paid data".
+private_*
+**/private_*
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
