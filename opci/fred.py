@@ -23,11 +23,10 @@ from pathlib import Path
 
 import yaml
 
-from opci import checks
+from opci import checks, paths
 
-ROOT = Path(__file__).resolve().parent.parent
-SERIES_FILE = ROOT / "escalation" / "series.yaml"
-SNAPSHOT_DIR = ROOT / "data" / "snapshots"
+SERIES_FILE = paths.ESCALATION_DIR / "series.yaml"
+SNAPSHOT_DIR = paths.SNAPSHOT_DIR
 
 CSV_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv?id={id}"
 API_URL = "https://api.stlouisfed.org/fred/series/observations?{query}"
@@ -145,11 +144,13 @@ def _snapshot_order(p):
     return (p.name[:10], int(suffix) if suffix else 1)
 
 
-def latest_snapshot(snapshot_dir=SNAPSHOT_DIR):
-    folders = sorted((p for p in Path(snapshot_dir).iterdir() if (p / "manifest.json").exists()),
+def latest_snapshot(snapshot_dir=None):
+    """Newest snapshot in `snapshot_dir`, or across the default folders (paths.snapshot_dirs)."""
+    dirs = [Path(snapshot_dir)] if snapshot_dir else paths.snapshot_dirs()
+    folders = sorted((p for d in dirs if d.exists() for p in d.iterdir() if (p / "manifest.json").exists()),
                      key=_snapshot_order)
     if not folders:
-        raise FredError(f"No cached snapshot found in {snapshot_dir}")
+        raise FredError(f"No cached snapshot found in {', '.join(str(d) for d in dirs) or 'any folder'}")
     return folders[-1]
 
 
@@ -189,15 +190,19 @@ def pull_all(series_list=None, api_key=None):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Pull OPCI series from FRED into a cached snapshot.")
-    ap.add_argument("--out", default=str(SNAPSHOT_DIR), help="snapshot folder (default data/snapshots)")
+    ap.add_argument("--out", default=None,
+                    help="snapshot folder (default: data/snapshots in a clone, ~/.opci/snapshots after pip install)")
     ap.add_argument("--strict", action="store_true",
                     help="fail when FRED cannot be reached (used by the refresh Action)")
     args = ap.parse_args(argv)
     api_key = os.environ.get("FRED_API_KEY") or None
     method = "fred_api" if api_key else "fred_csv"
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    explicit = args.out is not None
+    args.out = Path(args.out) if explicit else paths.refresh_dir()
     try:
-        previous = latest_snapshot(args.out)
+        # An explicit folder stands alone; by default compare with the newest snapshot anywhere.
+        previous = latest_snapshot(args.out if explicit else None)
     except (FredError, FileNotFoundError):
         previous = None
 
@@ -232,10 +237,10 @@ def main(argv=None):
     for r in revised:
         print(f"REVISED: {r['fred_id']} {r['date'][:7]} {r['old']:g} -> {r['new']:g} ({r['change'] * 100:+.2f}%)")
 
-    folder = write_snapshot(data, method, args.out)
-    if previous is not None and folder == previous:
-        print(f"No change in data. Latest snapshot stays {folder.name}.")
+    if previous is not None and (previous / "fred_raw.csv").read_text(encoding="utf-8") == _raw_csv(data):
+        print(f"No change in data. Latest snapshot stays {previous.name}.")
         return 0
+    folder = write_snapshot(data, method, args.out)
     report = {"checked_at": today, "previous_snapshot": previous.name if previous else None,
               "stale": stale, "revisions": revised}
     (folder / "refresh_report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")

@@ -8,8 +8,9 @@ authors:
     given-names: "Syed Zia"
     affiliation: "ORIMIZ Consulting"
 repository-code: "https://github.com/ORIMIZ-Consulting/open-plant-cost-index"
+url: "https://github.com/ORIMIZ-Consulting/open-plant-cost-index"
 license: MIT
-version: "0.1.0"
+version: "1.0.0-rc1"
 date-released: "2026-10-24"
 keywords:
   - cost index

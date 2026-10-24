@@ -14,6 +14,7 @@ from pathlib import Path
 from opci import api, fred, validate
 from opci.index import DEFAULT_PRODUCTIVITY
 from opci.locations import REFERENCE
+from opci.series_chart import build_series_html
 
 META_COLUMNS = ("version", "data_to", "snapshot", "investment", "productivity", "source", "scale")
 
@@ -67,9 +68,15 @@ def write_series(table, out):
 
 def cmd_series(args):
     table = api.series(start=args.start, end=args.end, freq=args.freq, **_settings(args))
+    if args.chart:
+        if not args.chart.lower().endswith(".html"):
+            raise ValueError("--chart must end in .html")
+        Path(args.chart).write_text(build_series_html(table, api.header(table["meta"])), encoding="utf-8")
+        print(f"Wrote chart to {args.chart}")
     if args.out:
         write_series(table, args.out)
         print(f"Wrote {len(table['rows'])} rows to {args.out}")
+    if args.out or args.chart:
         return 0
     print("\n".join(api.header(table["meta"])))
     print(f"{'Period':<8}{'OPCI':>9}  Flags")
@@ -103,6 +110,7 @@ def main(argv=None):
     s.add_argument("--end", type=int, default=None)
     s.add_argument("--freq", default="annual", choices=("annual", "quarterly"))
     s.add_argument("--out", default=None, help="write to a .csv or .json file")
+    s.add_argument("--chart", default=None, help="write an interactive chart to a .html file")
     _common(s)
     s.set_defaults(func=cmd_series)
 

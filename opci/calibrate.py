@@ -9,12 +9,10 @@ as a check.
 """
 import csv
 import math
-from pathlib import Path
-
+from opci import paths
 from opci.index import DEFAULT_PRODUCTIVITY, compute
 
-ROOT = Path(__file__).resolve().parent.parent
-POINTS_FILE = ROOT / "escalation" / "public_points.csv"
+POINTS_FILE = paths.ESCALATION_DIR / "public_points.csv"
 FAIL_LIMIT = 0.08    # worst error on fit points; above this the build fails
 WATCH_LIMIT = 0.10   # worst error on watch points; above this is reported only
 

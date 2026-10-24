@@ -9,13 +9,11 @@ three months. A period with fewer months than full is a part period and is flagg
 For quarters, t is the quarter midpoint measured from the 2019 midpoint, so
 2019Q1 is -0.375 years and 2020Q1 is 0.625 years.
 """
-from pathlib import Path
-
 import yaml
 
+from opci import paths
 from opci.fred import load_series_list, load_snapshot
 
-ROOT = Path(__file__).resolve().parent.parent
 BASE_YEAR = 2019
 DEFAULT_PRODUCTIVITY = 0.02
 PROTOTYPE_ANCHOR = 607.5   # public CEPCI 2019 annual average, used by the prototype
@@ -39,7 +37,7 @@ def supply_shock_warning(base, target):
 
 
 def load_weights(investment="general"):
-    path = ROOT / "escalation" / f"weights_{investment}.yaml"
+    path = paths.ESCALATION_DIR / f"weights_{investment}.yaml"
     if not path.exists():
         raise ValueError(f"No weight set for investment type {investment!r}")
     data = yaml.safe_load(path.read_text())

@@ -1,9 +1,10 @@
-import csv
+﻿import csv
 import json
 from pathlib import Path
 
 import pytest
 
+import opci
 from opci import combined, escalation, format_factor, location, series
 from opci.api import parse_period
 from opci.cli import main as cli
@@ -62,11 +63,11 @@ def test_supply_shock_note_in_output():
 def test_every_output_carries_version_and_data_date():
     text = format_factor(combined(base="2011", target="2026Q3", to="ID-KAL", snapshot=SNAP))
     first, second = text.splitlines()[:2]
-    assert first == "Open Plant Cost Index (OPCI) v0.1.0 | Maintained by ORIMIZ Consulting"
+    assert first == f"Open Plant Cost Index (OPCI) v{opci.__version__} | Maintained by ORIMIZ Consulting"
     assert second == "Data to 2026-09 | investment type: general | productivity 2% | index source: open"
     assert "range 1.08 to 1.38, confidence: medium" in text
     meta = series(start=2020, end=2020, snapshot=SNAP)["meta"]
-    assert meta["version"] == "0.1.0" and meta["data_to"] == "2026-09"
+    assert meta["version"] == opci.__version__ and meta["data_to"] == "2026-09"
 
 
 def test_productivity_off_label():
@@ -95,12 +96,23 @@ def test_cli_series_csv_and_json(tmp_path):
     assert cli(["series", "--start", "2020", "--end", "2021", "--out", str(out)]) == 0
     rows = list(csv.DictReader(out.open(encoding="utf-8")))
     assert [r["period"] for r in rows] == ["2020", "2021"]
-    assert rows[0]["version"] == "0.1.0" and rows[0]["data_to"]
+    assert rows[0]["version"] == opci.__version__ and rows[0]["data_to"]
     assert rows[1]["supply_shock"] == "True"
     js = tmp_path / "s.json"
     assert cli(["series", "--start", "2020", "--end", "2020", "--freq", "quarterly", "--out", str(js)]) == 0
     data = json.loads(js.read_text(encoding="utf-8"))
     assert len(data["rows"]) == 4 and data["meta"]["freq"] == "quarterly"
+
+
+def test_cli_series_chart(tmp_path):
+    out = tmp_path / "s.html"
+    assert cli(["series", "--start", "2019", "--end", "2023", "--freq", "quarterly", "--chart", str(out)]) == 0
+    html = out.read_text(encoding="utf-8")
+    assert html.startswith("<!doctype html>") and "Maintained by ORIMIZ Consulting" in html
+    assert "Supply-shock years" in html and "Table view" in html
+    assert "<script src" not in html   # self-contained
+    assert html.count("<tr><td>") == 20
+    assert cli(["series", "--chart", str(tmp_path / "s.png")]) == 2
 
 
 def test_cli_bad_location(capsys):

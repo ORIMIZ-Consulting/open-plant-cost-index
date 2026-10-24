@@ -21,14 +21,13 @@ from pathlib import Path
 
 import yaml
 
-from opci import CREDIT
+from opci import CREDIT, paths
 from opci.api import series
 from opci.calibrate import FAIL_LIMIT, WATCH_LIMIT, backtest
 from opci.cli import write_series
 from opci.fred import latest_snapshot, load_snapshot
 
-ROOT = Path(__file__).resolve().parent.parent
-RELEASE_DIR = ROOT / "data" / "releases"
+RELEASE_DIR = paths.RELEASE_DIR
 INVESTMENT = "general"
 FREQS = ("annual", "quarterly")
 REVISED_LIMIT = 0.005   # a value that moved more than 0.5% since the last release is flagged
@@ -71,7 +70,7 @@ def _flag_revisions(table, previous):
 def _note(name, meta, bt, revised, previous_name, snapshot):
     report_path = Path(snapshot) / "refresh_report.json"
     report = json.loads(report_path.read_text(encoding="utf-8")) if report_path.exists() else None
-    replacements = yaml.safe_load((ROOT / "escalation" / "series.yaml").read_text())["replacements"]
+    replacements = yaml.safe_load((paths.ESCALATION_DIR / "series.yaml").read_text())["replacements"]
     lines = [
         f"# OPCI data release {name}",
         "",
@@ -116,9 +115,11 @@ def _note(name, meta, bt, revised, previous_name, snapshot):
 
 
 def _content(table):
-    """A table without its 'revised' flags, which depend on the release before it."""
+    """The data of a table: rows without 'revised' flags (they depend on the release
+    before) and meta without the tool version (a new code version alone is not new data)."""
     rows = [{k: v for k, v in r.items() if k != "revised"} for r in table["rows"]]
-    return {"meta": table["meta"], "rows": rows}
+    meta = {k: v for k, v in table["meta"].items() if k != "version"}
+    return {"meta": meta, "rows": rows}
 
 
 def _identical(folder, tables):
@@ -129,10 +130,14 @@ def _identical(folder, tables):
     return True
 
 
-def make_release(snapshot=None, release_dir=RELEASE_DIR):
-    """Build a release from a snapshot. Returns (folder, created)."""
+def make_release(snapshot=None, release_dir=None):
+    """Build a release from a snapshot. Returns (folder, created).
+
+    Default folder: data/releases in a clone, ~/.opci/releases after pip install.
+    """
     snapshot = Path(snapshot) if snapshot else latest_snapshot()
-    release_dir = Path(release_dir)
+    release_dir = Path(release_dir) if release_dir else (
+        RELEASE_DIR if paths.IN_REPO else paths.user_dir() / "releases")
     previous = list_releases(release_dir)
     previous = previous[-1] if previous else None
 

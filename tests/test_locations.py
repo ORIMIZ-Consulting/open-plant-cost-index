@@ -90,7 +90,12 @@ def test_unknown_code():
 
 
 def test_no_shared_code_with_escalation():
+    # The location module may use opci.paths (where the data folders are), nothing else from opci.
     tree = ast.parse((ROOT / "opci" / "locations.py").read_text())
-    imported = {n.module for n in ast.walk(tree) if isinstance(n, ast.ImportFrom)}
-    imported |= {a.name for n in ast.walk(tree) if isinstance(n, ast.Import) for a in n.names}
-    assert not {m for m in imported if m and m.startswith("opci")}
+    used = set()
+    for n in ast.walk(tree):
+        if isinstance(n, ast.ImportFrom) and n.module and n.module.startswith("opci"):
+            used |= {f"{n.module}.{a.name}" if n.module == "opci" else n.module for a in n.names}
+        elif isinstance(n, ast.Import):
+            used |= {a.name for a in n.names if a.name.startswith("opci")}
+    assert used <= {"opci.paths"}

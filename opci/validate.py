@@ -10,13 +10,12 @@ import csv
 import sys
 from pathlib import Path
 
-from opci import CREDIT, __version__
+from opci import CREDIT, __version__, paths
 from opci.calibrate import (FAIL_LIMIT, POINTS_FILE, WATCH_LIMIT, backtest, fit_joint)
 from opci.chart import build_svg
 from opci.fred import latest_snapshot, load_snapshot
 from opci.index import DEFAULT_PRODUCTIVITY, SUPPLY_SHOCK_YEARS, compute
 
-ROOT = Path(__file__).resolve().parent.parent
 SENSITIVITY_RATES = (0.0, 0.01, 0.015, 0.02, 0.025)
 CHART_PATH = "docs/validation_chart.svg"   # relative to VALIDATION.md
 START_YEAR = 2008                          # version 1 series start
@@ -137,7 +136,7 @@ def build_report(snapshot=None):
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Back-test OPCI and write VALIDATION.md.")
     ap.add_argument("--snapshot", default=None, help="snapshot folder (default: latest)")
-    ap.add_argument("--out", default=str(ROOT / "VALIDATION.md"))
+    ap.add_argument("--out", default=str(paths.output_dir() / "VALIDATION.md"))
     args = ap.parse_args(argv)
     text, svg, bt = build_report(args.snapshot)
     Path(args.out).write_text(text, encoding="utf-8")

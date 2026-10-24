@@ -2,6 +2,9 @@
 private_*
 **/private_*
 
+# Data copied into the package at build time (setup.py)
+opci/_bundled/
+
 # Python
 __pycache__/
 *.py[cod]

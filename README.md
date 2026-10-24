@@ -4,7 +4,7 @@ A free, open source plant cost index, checked against the Chemical Engineering P
 
 Maintained by ORIMIZ Consulting.
 
-> **Status:** under construction. Version 1.0.0 is not released yet. Numbers in this repository may change until then.
+> **Status:** release candidate 1.0.0-rc1. Version 1.0.0 is not released yet and is not on PyPI yet. Numbers may change until then.
 
 ## What it does
 
@@ -28,13 +28,19 @@ The full method is in [METHOD.md](METHOD.md). The check against public CEPCI val
 
 ## Quick start
 
-Until version 1.0.0 is on PyPI, install from a clone of this repository:
+Once version 1.0.0 is on PyPI:
 
 ```
-git clone https://github.com/ORIMIZ-Consulting/open-plant-cost-index.git
-cd open-plant-cost-index
-pip install -e .
+pip install opci
 ```
+
+Until then, install the release candidate from GitHub:
+
+```
+pip install "opci @ git+https://github.com/ORIMIZ-Consulting/open-plant-cost-index.git@v1.0.0-rc1"
+```
+
+The package carries its own copy of the data, so it works outside a clone. `opci refresh` saves newer data in `~/.opci` (or the folder named by `OPCI_HOME`). To work on OPCI itself, clone the repository and run `pip install -e ".[dev]"`.
 
 Command line:
 
@@ -42,6 +48,7 @@ Command line:
 opci factor --base 2011 --target 2026 --location ID-KAL
 opci factor --base 2015 --location ID-KAL --from AU-NW
 opci series --start 2008 --freq quarterly --out opci_general.csv
+opci series --start 2008 --chart opci_general.html
 opci refresh
 opci validate
 ```
@@ -49,12 +56,12 @@ opci validate
 Sample output:
 
 ```
-Open Plant Cost Index (OPCI) v0.1.0 | Maintained by ORIMIZ Consulting
+Open Plant Cost Index (OPCI) v1.0.0rc1 | Maintained by ORIMIZ Consulting
 Data to 2026-09 | investment type: general | productivity 2% | index source: open
 Escalation 2011 to 2026:   x1.53
 Location US Gulf Coast to East Kalimantan, Indonesia:   x1.20  (range 1.08 to 1.38, confidence: medium)
 Combined factor:   x1.84
-Sources: BLS via FRED (12 series); location: ID-KAL: step rule (see location table, version 0.1.0)
+Sources: BLS via FRED (12 series, cached snapshot 2026-10-24); location: ID-KAL: step rule (see location table, version 0.1.0)
 Note: 2026 is a part year (January to September average).
 ```
 
@@ -105,7 +112,14 @@ These files are ignored by git, blocked by a pre-commit check and checked again 
 
 ## Citing OPCI
 
-See [CITATION.cff](CITATION.cff). A Zenodo DOI (Digital Object Identifier) will be added at the first release.
+<!-- Zenodo DOI badge goes here after the 1.0.0 GitHub release:
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.NNNNNNN.svg)](https://doi.org/10.5281/zenodo.NNNNNNN) -->
+
+Please cite OPCI with the version and data release you used:
+
+> Haider, S. Z. (2026). *Open Plant Cost Index (OPCI)* (Version 1.0.0, data release data-2026-09) [Computer software]. Maintained by ORIMIZ Consulting. https://github.com/ORIMIZ-Consulting/open-plant-cost-index
+
+GitHub shows a "Cite this repository" button built from [CITATION.cff](CITATION.cff). A Zenodo DOI (Digital Object Identifier) will be added at the 1.0.0 release.
 
 ## Licence
 

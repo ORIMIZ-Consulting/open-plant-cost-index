@@ -1,38 +1,46 @@
 # Changelog
 
-All notable changes to OPCI are listed here. Code versions and data releases are tracked apart.
+All notable changes to OPCI are listed here. Code versions (v1.0.0) and data releases (data-2026-09) are tracked apart.
 
-## Unreleased
+## 1.0.0-rc1 (24 October 2026): release candidate
 
-### Added
-- Repository skeleton: README, licence, data notice, citation file, folder layout.
-- `.gitignore` rule and pre-commit check that block any `private_*` file.
-- Series list (`escalation/series.yaml`) and general process plant weights (`escalation/weights_general.yaml`).
-- FRED (Federal Reserve Economic Data) pull (`opci/fred.py`) with cached snapshots in `data/snapshots/`. CSV download by default, FRED API when `FRED_API_KEY` is set.
-- Monthly GitHub Action (`.github/workflows/refresh.yml`) that pulls the data and commits the snapshot.
-- Escalation calculation (`opci/index.py`): annual and quarterly series, productivity adjustment, anchor setting, part period flag. Reproduces the prototype values (spec section 6.6) within 0.06 from the 2026-10-24 snapshot.
-- Public calibration points (`escalation/public_points.csv`): 16 CEPCI annual averages, 2008 to 2023, each with its public source. No public value found yet for 2024 or 2025.
-- Best-fit scale (`opci/calibrate.py`): least squares on the log ratio, plus a joint fit of the productivity rate as a check.
-- Supply-shock years 2021 and 2022: left out of the scale fit, shown on the validation page against a 10% watch limit that reports only. The 8% fail limit applies to the 14 normal years. Fitted scale: OPCI 2019 = 612.9. Worst error on normal years 5.5% (2016).
-- Supply-shock note in the output when the base or target date falls in 2021 or 2022. The note gives no percentages; the figures are in METHOD.md and VALIDATION.md.
-- Back-test and validation page (`opci/validate.py`, `VALIDATION.md`), run by the refresh Action.
-- METHOD.md.
-- Validation chart (`docs/validation_chart.svg`, built by `opci/chart.py`): OPCI line against public CEPCI points, supply-shock years shaded. Follows light and dark themes.
+First release candidate of the Open Plant Cost Index (OPCI). Maintained by ORIMIZ Consulting. Not yet on PyPI.
 
-- Location module, version 0.1.0 (`location/`, `opci/locations.py`): 13 locations from the decided starting table, with range, confidence, method, source and `as_of` year. Factor A to B = factor(B) / factor(A). Own method note and validation page.
-- Location ranges between two non-reference places combined by root sum of squares of relative deviations. Step-rule rows carry `as_of` 2026 and the owner-approved step trails. OIES group factors checked against Songhurst (2018) NG 137, with figure and page numbers: no mismatches.
-- Python interface (`opci/api.py`): `escalation`, `location`, `combined`, `series`, `format_factor`. Every result carries version, data date, investment type, productivity setting and index source, plus part-year and supply-shock notes.
-- Command line (`opci factor`, `opci series`, `opci refresh`, `opci validate`). Series output as CSV or JSON.
-- Overrides (`opci/overrides.py`): `private_cepci.csv` and `private_paid_<name>.csv`, with coverage, gap and jump checks. No gap filling.
-- Refresh checks (`opci/checks.py`): stale series (6 months, reported), discontinued series (12 months or failed download, fails), revisions above 0.5% (reported, saved in `refresh_report.json`). Offline fallback to the cached snapshot.
-- Data releases (`opci/release.py`): `data/releases/data-YYYY-MM/` with annual and quarterly CSV and JSON, `revised` flags and a release note; tagged by the refresh Action. `read_release()` for pinning. First release: `data-2026-09`.
+### What OPCI gives you
+- **Escalation** for general process plant, by year or quarter, from 2008 to the latest month. Built from 12 public domain US Bureau of Labor Statistics (BLS) series pulled through FRED (Federal Reserve Economic Data), weighted by the published 2002 CEPCI component weights, with a 2% a year productivity adjustment on labour and engineering (switchable).
+- **Scale** checked against public CEPCI values on 14 normal years (2008 to 2020 and 2023): OPCI 2019 = 612.9. Switch to 2019 = 100 if you prefer. The scale never changes an escalation factor.
+- **Location factors** for 13 places against the US Gulf Coast, each with a range, confidence level, method, source and `as_of` year. Moving a cost between two places uses factor(B) / factor(A), with ranges combined by root sum of squares.
+- **Combined factor**: escalation times location, with both shown apart.
+- **Outputs** as text, CSV, JSON and an interactive HTML chart. Every output shows the version, data date, investment type, productivity setting and index source.
+- **Python** (`escalation`, `location`, `combined`, `series`, `format_factor`, `read_release`) and **command line** (`opci factor`, `opci series`, `opci refresh`, `opci validate`).
+- **Overrides**: use your own CEPCI values (`private_cepci.csv`) or paid data (`private_paid_<name>.csv`). Gaps and odd jumps are reported, never filled. These files are never committed.
+- **Data releases** for pinning: first release `data-2026-09` (data to September 2026). Releases never change; revisions make a new release.
 
-### Changed
-- README and METHOD.md describe the scale as checked against public CEPCI values.
-- Description in README, CITATION.cff and pyproject.toml: "A free, open source plant cost index, checked against the Chemical Engineering Plant Cost Index (CEPCI), using only public domain data."
+### Validation (data-2026-09)
+- Prototype values in the spec reproduced within 0.06 index points.
+- Worst error against public CEPCI on the 14 normal years: 5.5% (2016), within the 8% fail limit. Root mean square error 3.2%.
+- Supply-shock years 2021 and 2022 are left out of the scale and checked on a 10% watch limit that reports only: 2021 -6.2%, 2022 -8.9%. The output carries a note when a base or target date falls in those years.
+- Oxford Institute for Energy Studies (OIES) group factors checked against Songhurst (2018), OIES Paper NG 137, Figure 5 (p. 12), Figure 16 (p. 41) and the remote group text (p. 12): no mismatches.
 
-### Changed
-- LICENSE copyright holder corrected to Syed Zia Haider.
+### Data refresh
+- Monthly GitHub Action: pulls FRED, reports stale series (over 6 months), fails on discontinued series (failed download or over 12 months), reports BLS revisions above 0.5%, runs the back-test, then makes a tagged data release.
+- If FRED cannot be reached, OPCI keeps using the cached snapshot and says so.
+
+### Packaging
+- The package carries its own copy of the data (`opci/_bundled/`, built by `setup.py`), so `pip install` works outside a clone. `opci refresh` saves newer data in `~/.opci` or `OPCI_HOME`.
+- Release workflow (`.github/workflows/release.yml`): tests, build and an install check on every version tag; PyPI trusted publishing and the GitHub release for final tags only.
+
+### Known limits
+- OPCI is checked against public CEPCI values. It is not CEPCI. Expect differences of up to about 5% in normal years, more in 2021 and 2022.
+- No public CEPCI annual value was found for 2024 or 2025. The 2014 value is from a secondary source.
+- General process plant weights only. LNG weights come in version 1.1.
+- US prices, with judgment-based location factors. Suitable for screening and early estimates (AACE International Class 5 and Class 4).
+
+### Changes during the build
+- LICENSE copyright holder set to Syed Zia Haider.
+- Description changed to "A free, open source plant cost index, checked against the Chemical Engineering Plant Cost Index (CEPCI), using only public domain data."
 
 ### Series replacements
 - Pumps: BLS series PCU333911333911 ended in 2017. Compressors (PCU333912333912) stand in for it.
+
+CEPCI is a trademark of Chemical Engineering magazine. OPCI is not affiliated with or endorsed by Chemical Engineering.

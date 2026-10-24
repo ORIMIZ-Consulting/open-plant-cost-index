@@ -6,12 +6,12 @@ at the combined factor step.
 """
 import csv
 import math
-from pathlib import Path
 
 import yaml
 
-ROOT = Path(__file__).resolve().parent.parent
-LOCATION_DIR = ROOT / "location"
+from opci import paths
+
+LOCATION_DIR = paths.LOCATION_DIR
 REFERENCE = "US-GC"
 CONFIDENCE_ORDER = ("low", "medium", "high")
 

@@ -1,0 +1,7 @@
+# Source distribution: include the data folders that setup.py bundles into the wheel.
+include README.md LICENSE CITATION.cff CHANGELOG.md DATA_NOTICE.md METHOD.md VALIDATION.md
+recursive-include escalation *.yaml *.csv
+recursive-include location *.csv *.yaml *.md VERSION
+recursive-include data/snapshots *.csv *.json
+recursive-include data/releases *.csv *.json *.md
+global-exclude private_*

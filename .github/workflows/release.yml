@@ -1,0 +1,98 @@
+# Build, test and (for final versions only) publish OPCI.
+#
+# Runs when a version tag is pushed, for example v1.0.0-rc1 or v1.0.0.
+# - Every tag: run the tests, check the tag matches opci.__version__, build the
+#   sdist and wheel, install the wheel in a clean folder and run it.
+# - Final tags only (no "-" in the tag, so v1.0.0 but not v1.0.0-rc1):
+#   publish to PyPI by trusted publishing, then create the GitHub release.
+#   The GitHub release is what Zenodo archives to mint the DOI.
+#
+# PyPI trusted publisher settings (pypi.org > Publishing > Add a pending publisher):
+#   PyPI project name: opci
+#   Owner:             ORIMIZ-Consulting
+#   Repository name:   open-plant-cost-index
+#   Workflow name:     release.yml
+#   Environment name:  pypi
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: pip install -e ".[dev]" packaging
+
+      - name: Tests
+        run: pytest -q
+
+      - name: Tag matches version
+        run: |
+          python - <<'EOF'
+          import os
+          from packaging.version import Version
+          import opci
+          tag = os.environ["GITHUB_REF_NAME"].lstrip("v")
+          assert Version(tag) == Version(opci.__version__), f"tag {tag} != opci {opci.__version__}"
+          print(f"tag {tag} matches opci {opci.__version__}")
+          EOF
+
+      - name: Build
+        run: python -m build
+
+      - name: Install the wheel outside the repository and run it
+        run: |
+          python -m venv /tmp/opci-check
+          /tmp/opci-check/bin/pip install dist/*.whl
+          cd /tmp
+          OPCI_HOME=/tmp/opci-home /tmp/opci-check/bin/opci factor --base 2011 --target 2025 --location ID-KAL
+          OPCI_HOME=/tmp/opci-home /tmp/opci-check/bin/opci series --start 2020 --end 2021
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish-pypi:
+    needs: build
+    if: ${{ !contains(github.ref_name, '-') }}
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/opci
+    permissions:
+      id-token: write   # trusted publishing; no API token is stored
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+
+  github-release:
+    needs: publish-pypi
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Create GitHub release (Zenodo archives it)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --title "OPCI $GITHUB_REF_NAME" --notes-file CHANGELOG.md --verify-tag
