@@ -22,7 +22,7 @@ PROTOTYPE_ANCHOR = 607.5   # public CEPCI 2019 annual average, used by the proto
 
 # Supply-shock years: left out of the scale fit, checked on a watch limit (METHOD.md).
 SUPPLY_SHOCK_YEARS = (2021, 2022)
-SUPPLY_SHOCK_GAP = "about 5 to 8%"
+SUPPLY_SHOCK_GAP = "about 6 to 9%"   # 2021 -6.2%, 2022 -8.9% on the 14-point fit
 
 
 def supply_shock_warning(base, target):

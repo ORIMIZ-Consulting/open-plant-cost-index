@@ -65,12 +65,12 @@ def test_no_warning_outside_supply_shock_years():
 
 def test_warning_for_base_in_supply_shock_year():
     msg = supply_shock_warning("2022", "2026Q3")
-    assert "about 5 to 8% below CEPCI" in msg and "overstated" in msg
+    assert "about 6 to 9% below CEPCI" in msg and "overstated" in msg
 
 
 def test_warning_for_target_in_supply_shock_year():
     msg = supply_shock_warning("2015", "2021Q4")
-    assert "about 5 to 8% below CEPCI" in msg and "understated" in msg
+    assert "about 6 to 9% below CEPCI" in msg and "understated" in msg
 
 
 def test_unknown_investment_type():

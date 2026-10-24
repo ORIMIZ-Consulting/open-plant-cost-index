@@ -95,7 +95,7 @@ One point is added each year when Chemical Engineering publishes the new annual 
 - The scale is fitted on the 14 normal years (2008 to 2020 and 2023).
 - The 8% fail limit applies to the normal years. If the worst error there goes above 8%, the build fails.
 - 2021 and 2022 are still shown on the validation page, marked as supply-shock years. They are checked against a separate 10% watch limit. Going above the watch limit is reported but does not fail the build.
-- When a base or target date falls in 2021 or 2022, the output carries a warning. OPCI ran below CEPCI in those years. A base date in those years may overstate escalation from it. A target date in those years may understate escalation to it.
+- When a base or target date falls in 2021 or 2022, the output carries a warning. OPCI ran about 6 to 9% below CEPCI in those years. A base date in those years may overstate escalation from it. A target date in those years may understate escalation to it.
 
 **Result with the 2026-10-24 snapshot:** scale gives OPCI 2019 = 612.9. Worst error on the 14 normal years is 5.5% (2016). Supply-shock years: 2021 is -6.2% and 2022 is -8.9%.
 
