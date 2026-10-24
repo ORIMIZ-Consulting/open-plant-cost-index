@@ -3,6 +3,14 @@ message: "If you use OPCI, please cite it as below."
 title: "Open Plant Cost Index (OPCI)"
 abstract: "A free, open source plant cost index, checked against the Chemical Engineering Plant Cost Index (CEPCI), using only public domain data. Maintained by ORIMIZ Consulting."
 type: software
+doi: 10.5281/zenodo.23615226
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23615226
+    description: "Concept DOI: all versions of OPCI"
+  - type: doi
+    value: 10.5281/zenodo.23615227
+    description: "Version DOI: OPCI 1.0.0"
 authors:
   - family-names: "Haider"
     given-names: "Syed Zia"

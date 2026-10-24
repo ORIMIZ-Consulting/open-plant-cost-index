@@ -17,6 +17,8 @@ All notable changes to OPCI are listed here. Code versions (v1.0.0) and data rel
 
 First release of the Open Plant Cost Index (OPCI). Maintained by ORIMIZ Consulting.
 
+DOI (Digital Object Identifier) for this version: [10.5281/zenodo.23615227](https://doi.org/10.5281/zenodo.23615227).
+
 ### Changes since 1.0.0-rc1
 - When the target date is not given, the output says so under the escalation line, for example "Target: 2026Q3 (latest quarter). Use --target 2026 for the year average." Results carry a `default_target` flag and a `target_note`.
 - README: estimating context (AACE International Class 5, FEL 1) and the Scale line reworded.

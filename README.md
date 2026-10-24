@@ -113,14 +113,13 @@ These files are ignored by git, blocked by a pre-commit check and checked again 
 
 ## Citing OPCI
 
-<!-- Zenodo DOI badge goes here after the 1.0.0 GitHub release:
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.NNNNNNN.svg)](https://doi.org/10.5281/zenodo.NNNNNNN) -->
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23615226.svg)](https://doi.org/10.5281/zenodo.23615226)
 
 Please cite OPCI with the version and data release you used:
 
 > Haider, S. Z. (2026). *Open Plant Cost Index (OPCI)* (Version 1.0.0, data release data-2026-09) [Computer software]. Maintained by ORIMIZ Consulting. https://github.com/ORIMIZ-Consulting/open-plant-cost-index
 
-GitHub shows a "Cite this repository" button built from [CITATION.cff](CITATION.cff). A Zenodo DOI (Digital Object Identifier) will be added at the 1.0.0 release.
+GitHub shows a "Cite this repository" button built from [CITATION.cff](CITATION.cff). The Zenodo DOI (Digital Object Identifier) [10.5281/zenodo.23615226](https://doi.org/10.5281/zenodo.23615226) covers all versions of OPCI. Each version also has its own DOI on Zenodo.
 
 ## Licence
 
