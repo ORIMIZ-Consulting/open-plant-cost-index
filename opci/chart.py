@@ -7,8 +7,8 @@ is opened directly.
 import math
 from xml.sax.saxutils import escape
 
-W, H = 760, 380
-LEFT, RIGHT, TOP, BOTTOM = 56, 120, 48, 40
+W, H = 760, 390
+LEFT, RIGHT, TOP, BOTTOM = 56, 120, 58, 40
 
 STYLE = """
   .surface { fill: #fcfcfb; }
@@ -105,14 +105,13 @@ def build_svg(opci, points, watch_years, part_label=None):
         out.append(f'<circle class="{cls}" cx="{x(yr):.1f}" cy="{y(v):.1f}" r="5">'
                    f'<title>{escape(tip)}</title></circle>')
 
-    # Direct labels at the right end.
+    # Direct label for the line. The points are named by the legend; a label at the
+    # last point would sit on the OPCI line.
     last = years[-1]
     out.append(f'<text class="label" x="{x(last) + 10:.1f}" y="{y(opci[last]) + 4:.1f}">OPCI</text>')
     if part_label:
         out.append(f'<text class="note" x="{x(last) + 10:.1f}" y="{y(opci[last]) + 20:.1f}">'
                    f'{escape(part_label)}</text>')
-    lp = max(points)
-    out.append(f'<text class="label" x="{x(lp) + 10:.1f}" y="{y(points[lp]) + 4:.1f}">Public CEPCI</text>')
 
     # Legend, top left.
     lx, ly = LEFT, 20
