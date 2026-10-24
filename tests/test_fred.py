@@ -34,6 +34,20 @@ def test_snapshot_round_trip(tmp_path):
     assert manifest["series"]["WPU114"]["count"] == 2
 
 
+def test_snapshot_is_never_overwritten(tmp_path):
+    day = datetime(2026, 10, 24, tzinfo=timezone.utc)
+    first = fred.write_snapshot({"X": [("2019-01-01", 1.0)]}, "fred_csv", tmp_path, day)
+    manifest = (first / "manifest.json").read_text()
+    # Same data again: nothing new, nothing rewritten.
+    assert fred.write_snapshot({"X": [("2019-01-01", 1.0)]}, "fred_csv", tmp_path, day) == first
+    assert (first / "manifest.json").read_text() == manifest
+    # Revised data on the same day: a new folder, the first one kept.
+    second = fred.write_snapshot({"X": [("2019-01-01", 1.1)]}, "fred_csv", tmp_path, day)
+    assert second.name == "2026-10-24-2"
+    assert fred.load_snapshot(first)[0] == {"X": [("2019-01-01", 1.0)]}
+    assert fred.latest_snapshot(tmp_path) == second
+
+
 def test_failed_series_fails_loudly(monkeypatch):
     def boom(fred_id, api_key=None):
         raise fred.FredError("gone")

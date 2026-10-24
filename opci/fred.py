@@ -87,17 +87,38 @@ def fetch_series(fred_id, api_key=None):
     return [(d, v) for d, v in obs if d >= START_DATE]
 
 
+def _raw_csv(data):
+    buf = io.StringIO()
+    w = csv.writer(buf, lineterminator="\n")
+    w.writerow(["fred_id", "date", "value"])
+    for fred_id, obs in data.items():
+        for d, v in obs:
+            w.writerow([fred_id, d, repr(v)])
+    return buf.getvalue()
+
+
 def write_snapshot(data, method, out_dir=SNAPSHOT_DIR, pulled_at=None):
-    """Write {fred_id: [(date, value)]} as a snapshot folder. Returns the folder path."""
+    """Write {fred_id: [(date, value)]} as a snapshot folder. Returns the folder path.
+
+    Snapshots are never overwritten. If the newest snapshot holds the same data, it is
+    kept as is and returned. Otherwise a new folder is made, with a -2, -3 suffix when
+    one already exists for the same day.
+    """
     pulled_at = pulled_at or datetime.now(timezone.utc)
-    folder = Path(out_dir) / pulled_at.strftime("%Y-%m-%d")
-    folder.mkdir(parents=True, exist_ok=True)
-    with open(folder / "fred_raw.csv", "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f, lineterminator="\n")
-        w.writerow(["fred_id", "date", "value"])
-        for fred_id, obs in data.items():
-            for d, v in obs:
-                w.writerow([fred_id, d, repr(v)])
+    raw = _raw_csv(data)
+    try:
+        newest = latest_snapshot(out_dir)
+        if (newest / "fred_raw.csv").read_text(encoding="utf-8") == raw:
+            return newest
+    except (FredError, FileNotFoundError):
+        pass
+    day = pulled_at.strftime("%Y-%m-%d")
+    folder, n = Path(out_dir) / day, 1
+    while folder.exists():
+        n += 1
+        folder = Path(out_dir) / f"{day}-{n}"
+    folder.mkdir(parents=True)
+    (folder / "fred_raw.csv").write_text(raw, encoding="utf-8", newline="")
     manifest = {
         "pulled_at": pulled_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "source": "BLS via FRED (Federal Reserve Bank of St. Louis)",
@@ -112,8 +133,15 @@ def write_snapshot(data, method, out_dir=SNAPSHOT_DIR, pulled_at=None):
     return folder
 
 
+def _snapshot_order(p):
+    """Sort key: 2026-10-24 < 2026-10-24-2 < 2026-10-24-10 < 2026-11-20."""
+    suffix = p.name[11:]
+    return (p.name[:10], int(suffix) if suffix else 1)
+
+
 def latest_snapshot(snapshot_dir=SNAPSHOT_DIR):
-    folders = sorted(p for p in Path(snapshot_dir).iterdir() if (p / "manifest.json").exists())
+    folders = sorted((p for p in Path(snapshot_dir).iterdir() if (p / "manifest.json").exists()),
+                     key=_snapshot_order)
     if not folders:
         raise FredError(f"No cached snapshot found in {snapshot_dir}")
     return folders[-1]
