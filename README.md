@@ -79,6 +79,10 @@ series(start=2008, freq="annual")
 
 Dates are a year (`2011`) or a year and quarter (`2011Q2`). The target date defaults to the latest full quarter. Location codes are in [location/factors.csv](location/factors.csv).
 
+## Using OPCI with AI chat tools
+
+To use OPCI through an artificial intelligence (AI) chat tool such as Gemini or ChatGPT, without installing it, see [AI_GUIDE.md](AI_GUIDE.md). It lists the files to upload, the formulas, a worked example and a prompt you can paste. The OPCI tool's own output is the reference: check AI arithmetic against it.
+
 ## Pinning a data release
 
 Each monthly refresh that passes its checks makes a data release, for example `data-2026-09`. Releases are never changed after they are made. A tool that uses OPCI must name a release, never "latest", so its estimates do not change overnight:
