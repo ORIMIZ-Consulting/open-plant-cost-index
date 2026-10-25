@@ -11,6 +11,9 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.23615227
     description: "Version DOI: OPCI 1.0.0"
+  - type: doi
+    value: 10.5281/zenodo.23637856
+    description: "Version DOI: OPCI 1.1.0"
 authors:
   - family-names: "Haider"
     given-names: "Syed Zia"

@@ -17,7 +17,7 @@ All notable changes to OPCI are listed here. Code versions (v1.0.0) and data rel
 
 Adds five LNG locations by the step rule. No existing location value or escalation value changed.
 
-DOI (Digital Object Identifier) for this version: added after Zenodo mints it.
+DOI (Digital Object Identifier) for this version: [10.5281/zenodo.23637856](https://doi.org/10.5281/zenodo.23637856).
 
 ### Added
 - Five locations, approved by the owner, all by the step rule from the Oxford Institute for Energy Studies (OIES) remote group (REMOTE 1.30, 2018), medium confidence, range -10% / +15%, `as_of` 2026:
