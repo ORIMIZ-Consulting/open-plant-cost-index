@@ -4,7 +4,7 @@ A free, open source plant cost index, checked against the Chemical Engineering P
 
 Maintained by ORIMIZ Consulting.
 
-> **Status:** version 1.0.0. Pin a data release (see below) so your estimates do not change when the data refresh.
+> **Status:** version 1.1.0. Pin a data release (see below) so your estimates do not change when the data refresh.
 
 ## What it does
 
@@ -24,7 +24,7 @@ It is built for students, small consultancies, researchers and independent estim
 - **Escalation** uses 12 price and wage series from the US Bureau of Labor Statistics (BLS), pulled through FRED (Federal Reserve Economic Data, St. Louis Fed). All are public domain. See [DATA_NOTICE.md](DATA_NOTICE.md).
 - **Weights** follow the published 2002 CEPCI component weights, mapped to the 12 series.
 - **Scale.** The level of the index estimated by OPCI is checked against public CEPCI values. The scale has no effect on any escalation factor.
-- **Location factors** come from published group factors (Oxford Institute for Energy Studies) and a stated step rule. Each factor has a range, a confidence level and a source.
+- **Location factors** for 18 locations come from published group factors (Oxford Institute for Energy Studies) and a stated step rule. Each factor has a range, a confidence level and a source.
 
 The full method is in [METHOD.md](METHOD.md). The check against public CEPCI values is in [VALIDATION.md](VALIDATION.md).
 
@@ -50,12 +50,12 @@ opci validate
 Sample output:
 
 ```
-Open Plant Cost Index (OPCI) v1.0.0 | Maintained by ORIMIZ Consulting
+Open Plant Cost Index (OPCI) v1.1.0 | Maintained by ORIMIZ Consulting
 Data to 2026-09 | investment type: general | productivity 2% | index source: open
 Escalation 2011 to 2026:   x1.53
 Location US Gulf Coast to East Kalimantan, Indonesia:   x1.20  (range 1.08 to 1.38, confidence: medium)
 Combined factor:   x1.84
-Sources: BLS via FRED (12 series, cached snapshot 2026-10-24); location: ID-KAL: step rule (see location table, version 0.1.0)
+Sources: BLS via FRED (12 series, cached snapshot 2026-10-24); location: ID-KAL: step rule (see location table, version 0.2.0)
 Note: 2026 is a part year (January to September average).
 ```
 
@@ -121,7 +121,7 @@ These files are ignored by git, blocked by a pre-commit check and checked again 
 
 Please cite OPCI with the version and data release you used:
 
-> Haider, S. Z. (2026). *Open Plant Cost Index (OPCI)* (Version 1.0.0, data release data-2026-09) [Computer software]. Maintained by ORIMIZ Consulting. https://github.com/ORIMIZ-Consulting/open-plant-cost-index
+> Haider, S. Z. (2026). *Open Plant Cost Index (OPCI)* (Version 1.1.0, data release data-2026-09) [Computer software]. Maintained by ORIMIZ Consulting. https://github.com/ORIMIZ-Consulting/open-plant-cost-index
 
 GitHub shows a "Cite this repository" button built from [CITATION.cff](CITATION.cff). The Zenodo DOI (Digital Object Identifier) [10.5281/zenodo.23615226](https://doi.org/10.5281/zenodo.23615226) covers all versions of OPCI. Each version also has its own DOI on Zenodo.
 

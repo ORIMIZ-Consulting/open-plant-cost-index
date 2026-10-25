@@ -68,15 +68,44 @@ def test_step_rule_rows_have_trail_and_2026():
         if r["method"].startswith("step rule"):
             assert r["as_of"] == 2026, code
             # "Start REMOTE 1.30 (OIES ..., 2018); -0.10 ...; +0.10 ... = 1.40."
+            # or "Start REMOTE 1.30 (OIES ..., 2018); no step (reason) = 1.30."
             trail = r["notes"].split(" = ")[0]
             start, *steps = [s.strip() for s in trail.split(";")]
             group, value = start.split()[1:3]
             assert table[group]["factor"] == float(value), code
+            steps = [s for s in steps if not s.startswith("no step")]
             total = float(value) + sum(float(s.split()[0]) for s in steps)
             assert total == pytest.approx(r["factor"]), code
             assert f"= {r['factor']:.2f}" in r["notes"], code
         elif r["method"] == "published group":
             assert r["as_of"] == 2018, code
+
+
+NEW_IN_0_2_0 = {
+    # code: (factor, trail)
+    "NG-BON": (1.20, "Start REMOTE 1.30 (OIES remote group, 2018); -0.10 existing LNG hub (six trains at Bonny) = 1.20."),
+    "MZ-AFU": (1.40, "Start REMOTE 1.30 (OIES remote group, 2018); +0.10 first-of-a-kind remote site with no infrastructure = 1.40."),
+    "AO-SOY": (1.30, "Start REMOTE 1.30 (OIES remote group, 2018); no step (remote single-train site) = 1.30."),
+    "ID-SUL": (1.30, "Start REMOTE 1.30 (OIES remote group, 2018); no step (remote single-train site) = 1.30."),
+    "ID-PAP": (1.20, "Start REMOTE 1.30 (OIES remote group, 2018); -0.10 existing LNG site (Trains 1 and 2) = 1.20."),
+}
+
+
+@pytest.mark.parametrize("code", sorted(NEW_IN_0_2_0))
+def test_new_locations_in_0_2_0(code):
+    factor, trail = NEW_IN_0_2_0[code]
+    r = load_factors()[code]
+    assert r["factor"] == factor
+    assert (r["confidence"], r["method"], r["source"], r["as_of"]) == ("medium", "step rule", "STEP-RULE", 2026)
+    # Decided range rule for medium confidence: -10% / +15%.
+    assert r["low"] == pytest.approx(factor * 0.90, abs=0.006)
+    assert r["high"] == pytest.approx(factor * 1.15, abs=0.006)
+    assert r["notes"] == trail
+
+
+def test_location_count_and_version():
+    assert len(load_factors()) == 18
+    assert version() == "0.2.0"
 
 
 def test_confidence_is_the_lower():

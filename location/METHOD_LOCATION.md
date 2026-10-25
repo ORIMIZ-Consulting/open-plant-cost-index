@@ -1,6 +1,8 @@
 # Location method
 
-Open Plant Cost Index (OPCI) location module, version 0.1.0 (see [VERSION](VERSION)). Maintained by ORIMIZ Consulting.
+Open Plant Cost Index (OPCI) location module, version 0.2.0 (see [VERSION](VERSION)). Maintained by ORIMIZ Consulting.
+
+The table holds 18 locations: the US Gulf Coast reference, 5 Oxford Institute for Energy Studies (OIES) group factors and 12 step-rule factors.
 
 The location module answers one question: how do plant costs in one place compare with the US Gulf Coast? It is judgment driven, unlike escalation, which is data driven. The two are kept apart. They share no code and meet only at the combined factor step.
 
@@ -91,6 +93,18 @@ Every row carries an `as_of` year.
 | QA-RLF, AE, OM | US-GC 1.00 | +0.10 extreme heat; +0.10 nearly all equipment imported; -0.10 mature LNG hub; -0.10 lower-cost imported labour | 1.00 |
 | CA-BC | REMOTE 1.30 | +0.10 high and scarce skilled labour; +0.10 wet cold climate; -0.10 heavy use of Asian-built modules | 1.40 |
 | RU-SAK | REMOTE 1.30 | +0.10 ice and cold climate; +0.10 little local labour and long logistics; -0.10 existing LNG site and infrastructure at Prigorodnoye | 1.40 (confirmed by practitioner judgment) |
+
+Added in location version 0.2.0 (approved by the owner, October 2026):
+
+| Code | Start | Steps | Result |
+|---|---|---|---|
+| NG-BON | REMOTE 1.30 | -0.10 existing LNG hub (six trains at Bonny) | 1.20 |
+| MZ-AFU | REMOTE 1.30 | +0.10 first-of-a-kind remote site with no infrastructure | 1.40 |
+| AO-SOY | REMOTE 1.30 | No step (remote single-train site) | 1.30 |
+| ID-SUL | REMOTE 1.30 | No step (remote single-train site) | 1.30 |
+| ID-PAP | REMOTE 1.30 | -0.10 existing LNG site (Trains 1 and 2) | 1.20 |
+
+All five are medium confidence, with the range -10% / +15% and `as_of` 2026.
 
 A test checks that each trail starts from the named group's factor and adds up to the row's factor.
 

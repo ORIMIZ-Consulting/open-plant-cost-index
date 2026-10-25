@@ -8,13 +8,13 @@ This guide is for people who want to use OPCI through an artificial intelligence
 
 ## 1. Files to upload
 
-All three files are pinned to OPCI version 1.0.0 and data release `data-2026-09` (data to September 2026). Download them from these raw GitHub links, then upload them to the chat:
+All three files are pinned to OPCI version 1.1.0 and data release `data-2026-09` (data to September 2026). Download them from these raw GitHub links, then upload them to the chat:
 
 | File | What it holds | Raw link |
 |---|---|---|
-| `opci_general_quarterly.csv` | OPCI by quarter, 2008Q1 onward | https://raw.githubusercontent.com/ORIMIZ-Consulting/open-plant-cost-index/v1.0.0/data/releases/data-2026-09/opci_general_quarterly.csv |
-| `opci_general_annual.csv` | OPCI by year, 2008 onward | https://raw.githubusercontent.com/ORIMIZ-Consulting/open-plant-cost-index/v1.0.0/data/releases/data-2026-09/opci_general_annual.csv |
-| `location/factors.csv` | Location factors against the US Gulf Coast, with ranges | https://raw.githubusercontent.com/ORIMIZ-Consulting/open-plant-cost-index/v1.0.0/location/factors.csv |
+| `opci_general_quarterly.csv` | OPCI by quarter, 2008Q1 onward | https://raw.githubusercontent.com/ORIMIZ-Consulting/open-plant-cost-index/v1.1.0/data/releases/data-2026-09/opci_general_quarterly.csv |
+| `opci_general_annual.csv` | OPCI by year, 2008 onward | https://raw.githubusercontent.com/ORIMIZ-Consulting/open-plant-cost-index/v1.1.0/data/releases/data-2026-09/opci_general_annual.csv |
+| `location/factors.csv` | Location factors for 18 locations against the US Gulf Coast, with ranges | https://raw.githubusercontent.com/ORIMIZ-Consulting/open-plant-cost-index/v1.1.0/location/factors.csv |
 
 Newer data releases appear in [data/releases](data/releases) each month, for example `data-2026-10`. Name the release you used in your estimate, so it can be reproduced.
 
@@ -94,19 +94,19 @@ The same result from the OPCI tool:
 ```
 opci factor --base 2015 --target 2026Q3 --location OM
 
-Open Plant Cost Index (OPCI) v1.0.0 | Maintained by ORIMIZ Consulting
+Open Plant Cost Index (OPCI) v1.1.0 | Maintained by ORIMIZ Consulting
 Data to 2026-09 | investment type: general | productivity 2% | index source: open
 Escalation 2015 to 2026Q3:   x1.53
 Location US Gulf Coast to Oman (Qalhat):   x1.00  (range 0.90 to 1.15, confidence: medium)
 Combined factor:   x1.53
-Sources: BLS via FRED (12 series, cached snapshot 2026-10-24); location: OM: step rule (see location table, version 0.1.0)
+Sources: BLS via FRED (12 series, cached snapshot 2026-10-24); location: OM: step rule (see location table, version 0.2.0)
 ```
 
 If an AI answer for this question is not about USD 153 million (range about 138 to 176), it has misread a file or made an arithmetic mistake.
 
 ## 5. A prompt you can paste
 
-> I have uploaded three files from the Open Plant Cost Index (OPCI) 1.0.0, data release data-2026-09: opci_general_annual.csv, opci_general_quarterly.csv and factors.csv. A plant cost [amount] in [base year or quarter] in [place, by code from factors.csv]. Estimate its cost in [target year or quarter] in [place].
+> I have uploaded three files from the Open Plant Cost Index (OPCI) 1.1.0, data release data-2026-09: opci_general_annual.csv, opci_general_quarterly.csv and factors.csv. A plant cost [amount] in [base year or quarter] in [place, by code from factors.csv]. Estimate its cost in [target year or quarter] in [place].
 > Use escalation = index at target / index at base, taking `value` from the annual file for a year and the quarterly file for a quarter. Use location factor A to B = factor(B) / factor(A). If A is US-GC, use B's low and high as the range; otherwise combine the ranges by root sum of squares of the relative deviations (low dev = sqrt(B_low_dev^2 + A_high_dev^2), high dev = sqrt(B_high_dev^2 + A_low_dev^2)). Combined factor = escalation x location. Show each value you read from the files and each step. Report escalation, location (with range and confidence) and the combined factor apart. If a date falls in 2021 or 2022, or a period is marked part, say so.
 
 Then check the answer against the OPCI tool.

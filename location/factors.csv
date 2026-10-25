@@ -12,3 +12,8 @@ QA-RLF,Qatar (Ras Laffan),1.00,0.90,1.15,medium,step rule,STEP-RULE,2026,"Start 
 AE,"UAE (Das Island, Ruwais)",1.00,0.90,1.15,medium,step rule,STEP-RULE,2026,"Start US-GC 1.00 (OIES USA base, 2018); +0.10 extreme heat; +0.10 nearly all equipment imported; -0.10 mature LNG hub; -0.10 lower-cost imported labour = 1.00."
 OM,Oman (Qalhat),1.00,0.90,1.15,medium,step rule,STEP-RULE,2026,"Start US-GC 1.00 (OIES USA base, 2018); +0.10 extreme heat; +0.10 nearly all equipment imported; -0.10 mature LNG hub; -0.10 lower-cost imported labour = 1.00. Smaller hub than Qatar."
 CA-BC,"British Columbia, Canada (Kitimat)",1.40,1.26,1.61,medium,step rule,STEP-RULE,2026,"Start REMOTE 1.30 (OIES remote group, 2018); +0.10 high and scarce skilled labour; +0.10 wet cold climate; -0.10 heavy use of Asian-built modules = 1.40."
+NG-BON,"Bonny, Nigeria",1.20,1.08,1.38,medium,step rule,STEP-RULE,2026,"Start REMOTE 1.30 (OIES remote group, 2018); -0.10 existing LNG hub (six trains at Bonny) = 1.20."
+MZ-AFU,"Afungi, Mozambique",1.40,1.26,1.61,medium,step rule,STEP-RULE,2026,"Start REMOTE 1.30 (OIES remote group, 2018); +0.10 first-of-a-kind remote site with no infrastructure = 1.40."
+AO-SOY,"Soyo, Angola",1.30,1.17,1.50,medium,step rule,STEP-RULE,2026,"Start REMOTE 1.30 (OIES remote group, 2018); no step (remote single-train site) = 1.30."
+ID-SUL,"Central Sulawesi, Indonesia (Donggi-Senoro)",1.30,1.17,1.50,medium,step rule,STEP-RULE,2026,"Start REMOTE 1.30 (OIES remote group, 2018); no step (remote single-train site) = 1.30."
+ID-PAP,"Bintuni Bay, West Papua, Indonesia (Tangguh)",1.20,1.08,1.38,medium,step rule,STEP-RULE,2026,"Start REMOTE 1.30 (OIES remote group, 2018); -0.10 existing LNG site (Trains 1 and 2) = 1.20."

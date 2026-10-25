@@ -4,14 +4,51 @@ All notable changes to OPCI are listed here. Code versions (v1.0.0) and data rel
 
 ## Roadmap
 
-### 1.1 (planned)
-- `series()` returns a pandas table when pandas is installed. The current format (`{'meta', 'rows'}`) stays as the fallback when it is not.
+### 1.2 (planned)
+- `series()` returns a pandas table when pandas is installed. The current format (`{'meta', 'rows'}`) stays as the fallback when it is not. (Planned for 1.1; moved here because 1.1.0 holds the new locations only.)
 - LNG (liquefied natural gas) weights, once their public basis is documented.
 - Quarterly data releases.
-- More locations: Mozambique, Nigeria, Egypt, Mexico (Pacific coast), Argentina, Arctic Norway, Saudi Arabia.
+- More locations: Egypt, Mexico (Pacific coast), Argentina, Arctic Norway, Saudi Arabia.
 
 ### 2.0 (planned)
 - Imported and local cost split, World Bank International Comparison Program (ICP) cross-check, local currency output.
+
+## 1.1.0 (25 October 2026)
+
+Adds five LNG locations by the step rule. No existing location value or escalation value changed.
+
+DOI (Digital Object Identifier) for this version: added after Zenodo mints it.
+
+### Added
+- Five locations, approved by the owner, all by the step rule from the Oxford Institute for Energy Studies (OIES) remote group (REMOTE 1.30, 2018), medium confidence, range -10% / +15%, `as_of` 2026:
+
+  | Code | Location | Factor | Range | Step trail |
+  |---|---|---|---|---|
+  | NG-BON | Bonny, Nigeria | 1.20 | 1.08 to 1.38 | -0.10 existing LNG hub (six trains at Bonny) |
+  | MZ-AFU | Afungi, Mozambique | 1.40 | 1.26 to 1.61 | +0.10 first-of-a-kind remote site with no infrastructure |
+  | AO-SOY | Soyo, Angola | 1.30 | 1.17 to 1.50 | No step (remote single-train site) |
+  | ID-SUL | Central Sulawesi, Indonesia (Donggi-Senoro) | 1.30 | 1.17 to 1.50 | No step (remote single-train site) |
+  | ID-PAP | Bintuni Bay, West Papua, Indonesia (Tangguh) | 1.20 | 1.08 to 1.38 | -0.10 existing LNG site (Trains 1 and 2) |
+
+- AI_GUIDE.md: how to use OPCI with artificial intelligence (AI) chat tools, with a worked example.
+- Release notes template (`.github/RELEASE_TEMPLATE.md`), with "Update dependent tools: open-fel1-lng-cost" for a first-number (MAJOR) change.
+- Tests: the five new rows follow the range rule and carry their step trail; the table holds 18 locations.
+
+### Changed
+- Location module version 0.2.0 (was 0.1.0). The table now holds 18 locations.
+- AI_GUIDE.md links pinned to v1.1.0.
+- Zenodo DOIs in CITATION.cff and the README.
+
+### Values
+- Escalation values: unchanged.
+- Location values: the 13 existing rows are unchanged. Five new rows.
+- Data release used for the checks: data-2026-09.
+
+### Checks
+- Tests: all 92 pass.
+- Back-test worst error on normal years: 5.5% (fail limit 8%).
+
+CEPCI is a trademark of Chemical Engineering magazine. OPCI is not affiliated with or endorsed by Chemical Engineering.
 
 ## 1.0.0 (24 October 2026)
 

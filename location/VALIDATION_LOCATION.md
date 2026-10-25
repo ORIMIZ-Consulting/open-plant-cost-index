@@ -1,6 +1,6 @@
 # Location validation
 
-Open Plant Cost Index (OPCI) location module, version 0.1.0. Maintained by ORIMIZ Consulting.
+Open Plant Cost Index (OPCI) location module, version 0.2.0. Maintained by ORIMIZ Consulting.
 
 This page compares OPCI location factors with published factors. In version 1 the only published source is the Oxford Institute for Energy Studies (OIES) paper: Songhurst, B. (2018). LNG Plant Cost Reduction 2014-18. OIES Paper NG 137. A cross-check against World Bank International Comparison Program (ICP) construction price levels comes in version 2.
 
@@ -36,6 +36,11 @@ These have no published factor. Each starts from an OIES group and moves in step
 | AE | UAE (Das Island, Ruwais) | 1.00 | 0.90 to 1.15 | Medium | US-GC 1.00 |
 | OM | Oman (Qalhat) | 1.00 | 0.90 to 1.15 | Medium | US-GC 1.00 |
 | CA-BC | British Columbia, Canada (Kitimat) | 1.40 | 1.26 to 1.61 | Medium | REMOTE 1.30 |
+| NG-BON | Bonny, Nigeria | 1.20 | 1.08 to 1.38 | Medium | REMOTE 1.30 |
+| MZ-AFU | Afungi, Mozambique | 1.40 | 1.26 to 1.61 | Medium | REMOTE 1.30 |
+| AO-SOY | Soyo, Angola | 1.30 | 1.17 to 1.50 | Medium | REMOTE 1.30 |
+| ID-SUL | Central Sulawesi, Indonesia (Donggi-Senoro) | 1.30 | 1.17 to 1.50 | Medium | REMOTE 1.30 |
+| ID-PAP | Bintuni Bay, West Papua, Indonesia (Tangguh) | 1.20 | 1.08 to 1.38 | Medium | REMOTE 1.30 |
 
 ## Checks run by the tests
 
