@@ -15,6 +15,7 @@ on:
       - opci/**
       - escalation/**
       - location/**
+      - scripts/build_calculator_data.py
       - .github/workflows/refresh.yml
 
 permissions:
@@ -59,11 +60,16 @@ jobs:
       - name: Data release
         run: python -m opci.release
 
+      # The web calculator (docs/index.html, GitHub Pages) reads docs/opci_data.js,
+      # built from the latest release and location/factors.csv.
+      - name: Calculator data
+        run: python -m scripts.build_calculator_data
+
       - name: Commit and tag
         run: |
           git config user.name "opci-refresh[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/snapshots data/releases VALIDATION.md docs/validation_chart.svg
+          git add data/snapshots data/releases VALIDATION.md docs/validation_chart.svg docs/opci_data.js
           if git diff --cached --quiet; then
             echo "No change in data."
           else

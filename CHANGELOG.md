@@ -13,6 +13,16 @@ All notable changes to OPCI are listed here. Code versions (v1.0.0) and data rel
 ### 2.0 (planned)
 - Imported and local cost split, World Bank International Comparison Program (ICP) cross-check, local currency output.
 
+## Unreleased
+
+### Added
+- Web calculator on GitHub Pages (`docs/index.html`). It reads `docs/opci_data.js`, built by `scripts/build_calculator_data.py` from the latest data release and `location/factors.csv`. The monthly refresh rebuilds it.
+- Tests: the calculator's escalation, location range and confidence match `opci.escalation()` and `opci.location()`, and its data file matches the latest release.
+
+### Values
+- Escalation values: unchanged.
+- Location values: unchanged.
+
 ## 1.1.0 (25 October 2026)
 
 Adds five LNG locations by the step rule. No existing location value or escalation value changed.

@@ -19,6 +19,10 @@ OPCI reports the two numbers apart, then the combined factor. It never blends th
 
 It is built for students, small consultancies, researchers and independent estimators who cannot buy paid cost index data.
 
+## Web calculator
+
+Use OPCI in your browser, with nothing to install: [OPCI Calculator](https://orimiz-consulting.github.io/open-plant-cost-index/). Pick the dates and places, type the cost and read the escalation, location and combined factors. The page shows the data release and OPCI version it uses. Its data are rebuilt from each new data release, and a test checks its results against the Python package.
+
 ## Where the numbers come from
 
 - **Escalation** uses 12 price and wage series from the US Bureau of Labor Statistics (BLS), pulled through FRED (Federal Reserve Economic Data, St. Louis Fed). All are public domain. See [DATA_NOTICE.md](DATA_NOTICE.md).
