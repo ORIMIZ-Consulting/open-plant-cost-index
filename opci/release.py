@@ -9,9 +9,10 @@ Each refresh that passes the checks makes a release folder named by its data mon
 
 Releases are never changed after they are made, so a calling tool can pin one by
 name. If the data for the same month change (for example after BLS revisions), a
-new folder is made with a -2, -3 suffix.
+new folder is made with a -2, -3 suffix. --force makes a new folder even when the
+data are unchanged, so the version column names the OPCI version that built it.
 
-Run:  python -m opci.release [--snapshot data/snapshots/<date>]
+Run:  python -m opci.release [--snapshot data/snapshots/<date>] [--force]
 """
 import argparse
 import csv
@@ -130,10 +131,12 @@ def _identical(folder, tables):
     return True
 
 
-def make_release(snapshot=None, release_dir=None):
+def make_release(snapshot=None, release_dir=None, force=False):
     """Build a release from a snapshot. Returns (folder, created).
 
     Default folder: data/releases in a clone, ~/.opci/releases after pip install.
+    force: make a new release even if the data match the latest one (for example to
+    record a new OPCI version in the version column). Values are never changed.
     """
     snapshot = Path(snapshot) if snapshot else latest_snapshot()
     release_dir = Path(release_dir) if release_dir else (
@@ -148,7 +151,7 @@ def make_release(snapshot=None, release_dir=None):
         revised[freq] = _flag_revisions(table, prior)
         tables[freq] = json.loads(json.dumps(table))   # plain JSON types, as stored
 
-    if previous and _identical(previous, tables):
+    if previous and not force and _identical(previous, tables):
         return previous, False
 
     _, manifest = load_snapshot(snapshot)
@@ -172,8 +175,10 @@ def make_release(snapshot=None, release_dir=None):
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Make an OPCI data release from the latest snapshot.")
     ap.add_argument("--snapshot", default=None)
+    ap.add_argument("--force", action="store_true",
+                    help="make a new release even if the data are unchanged")
     args = ap.parse_args(argv)
-    folder, created = make_release(args.snapshot)
+    folder, created = make_release(args.snapshot, force=args.force)
     print(f"{'Release written' if created else 'No change. Latest release stays'}: {folder.name}")
     return 0
 

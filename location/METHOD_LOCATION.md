@@ -84,7 +84,7 @@ Every row carries an `as_of` year.
 - Step-rule rows carry 2026, the year the judgment was made. Their notes name the starting group and its year.
 - The reference row carries 2026.
 
-## 5a. Step trails (approved by the owner, October 2026)
+## 5a. Step trails (approved by the author (Syed Zia Haider), October 2026)
 
 | Code | Start | Steps | Result |
 |---|---|---|---|
@@ -94,7 +94,7 @@ Every row carries an `as_of` year.
 | CA-BC | REMOTE 1.30 | +0.10 high and scarce skilled labour; +0.10 wet cold climate; -0.10 heavy use of Asian-built modules | 1.40 |
 | RU-SAK | REMOTE 1.30 | +0.10 ice and cold climate; +0.10 little local labour and long logistics; -0.10 existing LNG site and infrastructure at Prigorodnoye | 1.40 (confirmed by practitioner judgment) |
 
-Added in location version 0.2.0 (approved by the owner, October 2026):
+Added in location version 0.2.0 (approved by the author (Syed Zia Haider), October 2026):
 
 | Code | Start | Steps | Result |
 |---|---|---|---|

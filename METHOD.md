@@ -116,7 +116,7 @@ A GitHub Action runs on the 20th of each month. Users can also run `opci refresh
 
 If FRED cannot be reached, OPCI keeps using the latest cached snapshot and says so. Every output names the snapshot it used. Snapshots are never overwritten.
 
-Each refresh that passes makes a data release named by its data month, for example `data-2026-09`, with annual and quarterly files, a release note and a git tag. Releases are never changed. If the data for the same month change, a new release is made with a `-2` suffix. Each row carries a `revised` flag when its value moved more than 0.5% since the previous release.
+Each refresh that passes makes a data release named by its data month, for example `data-2026-09`, with annual and quarterly files, a release note and a git tag. Releases are never changed. If the data for the same month change, a new release is made with a `-2` suffix. A new OPCI version can also rebuild unchanged data as a new release (`python -m opci.release --force`), so the version column names the version that built it. The values stay the same. Each row carries a `revised` flag when its value moved more than 0.5% since the previous release.
 
 ## 6b. Overrides
 

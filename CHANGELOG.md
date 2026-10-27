@@ -13,15 +13,34 @@ All notable changes to OPCI are listed here. Code versions (v1.0.0) and data rel
 ### 2.0 (planned)
 - Imported and local cost split, World Bank International Comparison Program (ICP) cross-check, local currency output.
 
-## Unreleased
+## 1.1.1 (27 October 2026)
+
+Fixes the version column in the data release and a wording change. Adds the web calculator. No index or location value changed.
+
+DOI (Digital Object Identifier) for this version: added after Zenodo mints it.
 
 ### Added
 - Web calculator on GitHub Pages (`docs/index.html`). It reads `docs/opci_data.js`, built by `scripts/build_calculator_data.py` from the latest data release and `location/factors.csv`. The monthly refresh rebuilds it.
-- Tests: the calculator's escalation, location range and confidence match `opci.escalation()` and `opci.location()`, and its data file matches the latest release.
+- Data release `data-2026-09-2`, built by OPCI 1.1.1 from the same snapshot (2026-10-24). Its values are the same as `data-2026-09`. Only the version column differs.
+- `python -m opci.release --force`: makes a new release even when the data are unchanged.
+- Tests: the calculator matches `opci.escalation()` and `opci.location()`; release rows carry the OPCI version that built them; a forced release keeps every value.
+
+### Fixed
+- The version column in `data-2026-09` shows 0.1.0, the pre-release code that built it. `data-2026-09` stays unchanged, as releases are never changed. Use `data-2026-09-2`, which shows 1.1.1.
+- "approved by the owner" now reads "approved by the author (Syed Zia Haider)" in `location/sources.yaml`, `location/METHOD_LOCATION.md` and this changelog.
+
+### Changed
+- README citation, AI_GUIDE.md links and the calculator point to OPCI 1.1.1 and data release `data-2026-09-2`.
 
 ### Values
 - Escalation values: unchanged.
 - Location values: unchanged.
+- Location module version: 0.2.0.
+- Data release used for the checks: data-2026-09-2.
+
+### Checks
+- Tests: all pass.
+- Back-test worst error on normal years: 5.5% (fail limit 8%).
 
 ## 1.1.0 (25 October 2026)
 
@@ -30,7 +49,7 @@ Adds five LNG locations by the step rule. No existing location value or escalati
 DOI (Digital Object Identifier) for this version: [10.5281/zenodo.23637856](https://doi.org/10.5281/zenodo.23637856).
 
 ### Added
-- Five locations, approved by the owner, all by the step rule from the Oxford Institute for Energy Studies (OIES) remote group (REMOTE 1.30, 2018), medium confidence, range -10% / +15%, `as_of` 2026:
+- Five locations, approved by the author (Syed Zia Haider), all by the step rule from the Oxford Institute for Energy Studies (OIES) remote group (REMOTE 1.30, 2018), medium confidence, range -10% / +15%, `as_of` 2026:
 
   | Code | Location | Factor | Range | Step trail |
   |---|---|---|---|---|

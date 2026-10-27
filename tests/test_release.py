@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pytest
 
+import opci
 from opci import fred, read_release
 from opci.release import list_releases, make_release
 
@@ -30,7 +31,7 @@ def test_first_release(first):
     rows = list(csv.DictReader((folder / "opci_general_annual.csv").open(encoding="utf-8")))
     assert rows[0]["period"] == "2008" and rows[-1]["part"] == "True"
     assert all(r["revised"] == "False" for r in rows)
-    assert all(r["version"] and r["data_to"] == "2026-09" for r in rows)
+    assert all(r["version"] == opci.__version__ and r["data_to"] == "2026-09" for r in rows)
 
 
 def test_same_data_makes_no_new_release(first):
@@ -62,3 +63,18 @@ def test_revised_data_same_month_gets_new_release(tmp_path):
     assert rows["2025"]["revised"] and not rows["2015"]["revised"]
     # The first release is untouched.
     assert not any(r["revised"] for r in read_release("data-2026-09", release_dir=rel)["rows"])
+
+
+def test_force_makes_new_release_with_same_values(tmp_path):
+    # A new OPCI version can rebuild the same data, so the version column names the
+    # version that built it. The values do not change and nothing is flagged as revised.
+    rel = tmp_path / "releases"
+    first, _ = make_release(SNAP, rel)
+    again, created = make_release(SNAP, rel, force=True)
+    assert created and again.name == "data-2026-09-2"
+    for freq in ("annual", "quarterly"):
+        old = read_release("data-2026-09", freq, release_dir=rel)
+        new = read_release("data-2026-09-2", freq, release_dir=rel)
+        assert [(r["period"], r["value"]) for r in new["rows"]] ==             [(r["period"], r["value"]) for r in old["rows"]]
+        assert not any(r["revised"] for r in new["rows"])
+        assert new["meta"]["version"] == opci.__version__
