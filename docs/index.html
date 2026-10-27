@@ -224,8 +224,14 @@ function opciCalc(D){
 }
 </script>
 <script>
-const D=window.OPCI_DATA,C=opciCalc(D),L=C.L;
 const $=id=>document.getElementById(id);
+// Without its data file the page cannot work. Say so plainly instead of leaving the fields empty.
+function noData(){
+  $('big').textContent='No data';
+  $('notes').innerHTML='<div class="note warn">The page could not load its data file (opci_data.js), so it cannot calculate. Reload the page. If the problem stays, use the Python package or <a href="https://github.com/ORIMIZ-Consulting/open-plant-cost-index">report it on GitHub</a>.</div>';
+}
+let D,C,L;
+try{D=window.OPCI_DATA;C=opciCalc(D);L=C.L}catch(e){noData();throw e}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const lastY=C.latestQuarter.slice(0,4);

@@ -93,3 +93,4 @@ def test_page_shows_required_text():
     assert "10.5281/zenodo.23615226" in html
     assert "For future dates, use the" in html and "github.com/ORIMIZ-Consulting/open-fel1-lng-cost" in html
     assert 'src="opci_data.js"' in html
+    assert "The page could not load its data file" in html
