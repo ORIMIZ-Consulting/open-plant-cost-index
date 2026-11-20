@@ -1,7 +1,7 @@
 # Validation: OPCI against public CEPCI values
 
 Open Plant Cost Index (OPCI) v1.1.1 | Maintained by ORIMIZ Consulting  
-Data to 2026-09 | snapshot 2026-10-24 | investment type: general | productivity 2% | index source: open
+Data to 2026-10 | snapshot 2026-11-20 | investment type: general | productivity 2% | index source: open
 
 This page compares OPCI with Chemical Engineering Plant Cost Index (CEPCI) annual averages that Chemical Engineering has published free. Each value is cited to its source. The page is rebuilt on every data refresh by `python -m opci.validate`.
 
@@ -48,15 +48,15 @@ Same rate on labour and engineering. Scale refitted on the normal years for each
 
 | Rate | Worst error | RMS error | OPCI 2019 | OPCI latest |
 |---|---|---|---|---|
-| 0.0% | 10.0% | 5.3% | 638.6 | 945.3 |
-| 1.0% | 7.3% | 4.0% | 626.0 | 901.7 |
-| 1.5% | 5.8% | 3.5% | 619.5 | 880.6 |
-| **2.0%** | 5.5% | 3.2% | 612.9 | 859.9 |
-| 2.5% | 6.7% | 3.2% | 606.2 | 839.7 |
+| 0.0% | 10.0% | 5.3% | 638.6 | 948.3 |
+| 1.0% | 7.3% | 4.0% | 626.0 | 904.6 |
+| 1.5% | 5.8% | 3.5% | 619.5 | 883.4 |
+| **2.0%** | 5.5% | 3.2% | 612.9 | 862.7 |
+| 2.5% | 6.7% | 3.2% | 606.2 | 842.4 |
 
 Rate fitted jointly with the scale (check only): 2.25% (worst error 5.9%, RMS 3.1%). The default stays at 2%.
 
-OPCI latest is 2026 (9 months, part year).
+OPCI latest is 2026 (10 months, part year).
 
 ## Gaps
 

@@ -53,7 +53,7 @@
 <text class="tick" x="575.1" y="368" text-anchor="middle">2024</text>
 <text class="tick" x="640.0" y="368" text-anchor="middle">2026</text>
 <path class="opci" d="M56.0,313.0 L88.4,314.5 L120.9,313.9 L153.3,305.8 L185.8,302.1 L218.2,302.6 L250.7,299.2 L283.1,298.6 L315.6,297.9 L348.0,293.4 L380.4,277.3 L412.9,267.6 L445.3,266.2 L477.8,229.6 L510.2,172.6 L542.7,155.3 L575.1,140.9 L607.6,117.0"/>
-<path class="opci-part" d="M607.6,117.0 L640.0,87.3"/>
+<path class="opci-part" d="M607.6,117.0 L640.0,85.2"/>
 <circle class="opci-dot" cx="56.0" cy="313.0" r="2.5"><title>2008: OPCI 550.7</title></circle>
 <circle class="opci-dot" cx="88.4" cy="314.5" r="2.5"><title>2009: OPCI 548.6</title></circle>
 <circle class="opci-dot" cx="120.9" cy="313.9" r="2.5"><title>2010: OPCI 549.5</title></circle>
@@ -72,7 +72,7 @@
 <circle class="opci-dot" cx="542.7" cy="155.3" r="2.5"><title>2023: OPCI 766.7</title></circle>
 <circle class="opci-dot" cx="575.1" cy="140.9" r="2.5"><title>2024: OPCI 786.4</title></circle>
 <circle class="opci-dot" cx="607.6" cy="117.0" r="2.5"><title>2025: OPCI 819.2</title></circle>
-<circle class="opci-dot" cx="640.0" cy="87.3" r="2.5"><title>2026: OPCI 859.9 (9 months, part year)</title></circle>
+<circle class="opci-dot" cx="640.0" cy="85.2" r="2.5"><title>2026: OPCI 862.7 (10 months, part year)</title></circle>
 <circle class="cepci" cx="56.0" cy="295.0" r="5"><title>2008: public CEPCI 575.4, OPCI -4.3%</title></circle>
 <circle class="cepci" cx="88.4" cy="334.0" r="5"><title>2009: public CEPCI 521.9, OPCI +5.1%</title></circle>
 <circle class="cepci" cx="120.9" cy="312.9" r="5"><title>2010: public CEPCI 550.8, OPCI -0.2%</title></circle>
@@ -89,8 +89,8 @@
 <circle class="cepci-watch" cx="477.8" cy="197.6" r="5"><title>2021: public CEPCI 708.8, OPCI -6.2%</title></circle>
 <circle class="cepci-watch" cx="510.2" cy="119.3" r="5"><title>2022: public CEPCI 816.0, OPCI -8.9%</title></circle>
 <circle class="cepci" cx="542.7" cy="132.5" r="5"><title>2023: public CEPCI 797.9, OPCI -3.9%</title></circle>
-<text class="label" x="650.0" y="91.3">OPCI</text>
-<text class="note" x="650.0" y="107.3">9 months, part year</text>
+<text class="label" x="650.0" y="89.2">OPCI</text>
+<text class="note" x="650.0" y="105.2">10 months, part year</text>
 <line class="opci" x1="56" x2="76" y1="20" y2="20"/>
 <text class="note" x="82" y="24">OPCI (annual)</text>
 <circle class="cepci" cx="186" cy="20" r="5"/>
